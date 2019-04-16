@@ -1,0 +1,30 @@
+
+.tox-area {
+    text-align: left;
+    padding: 20px;
+    &__content{
+        height: calc(100vh - 245px);
+        max-height: 100%;
+        width: 100%;
+        min-width: 300px;
+        overflow: auto;
+        &__item{
+            margin: 10px 0px;
+            max-width: 45%;
+            display: flex;
+            align-items: flex-start;
+            & .avatar{
+                margin: 0px 20px;
+            }
+        }
+    }
+    &__input{
+        height: 90px;
+        width: 100%;
+        & textarea{
+            min-height: 90px!important;
+            height: 90px!important;
+            resize: none!important;
+        }
+    }
+}

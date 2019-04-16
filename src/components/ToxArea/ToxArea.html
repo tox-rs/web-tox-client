@@ -1,0 +1,23 @@
+<section class="tox-area">
+  <md-content class="tox-area__content">
+    <md-content class="tox-area__content__item" v-for="item in content">
+      <div class="avatar"><md-avatar class="md-avatar-icon">A</md-avatar></div>
+      <div class="content">
+        <div class="name">A</div>
+        <div class="msg">{{ item }}</div>
+      </div>
+    </md-content>
+  </md-content>
+  <div class="tox-area__input">
+    <md-field>
+      <md-textarea
+        v-on:keydown.enter.prevent="submit"
+        v-model="message"
+        name="chat"
+        id="chat-input-textarea"
+        style="width: 80%"
+        placeholder="Enter message here..."
+      ></md-textarea>
+    </md-field>
+  </div>
+</section>
