@@ -1,0 +1,20 @@
+
+<section class="room-header">
+  <div class="title">
+      <md-avatar class="md-avatar-icon">E</md-avatar>
+      <span>Empty title</span>
+  </div>
+  <div class="toolbar">
+      <md-button class="md-icon-button"><md-icon class="md-primary">settings</md-icon></md-button>
+      <md-button class="md-icon-button"><md-icon class="md-primary">share</md-icon></md-button>
+      <md-button class="md-icon-button"><md-icon class="md-primary">apps</md-icon></md-button>
+      <md-button class="md-icon-button"><md-icon class="md-primary">search</md-icon></md-button>
+      <div class="divider"></div>
+      <md-tabs @md-changed="tabSelect">
+        <md-tab id="tab-person" md-icon="person"></md-tab>
+        <md-tab id="tab-files" md-icon="insert_drive_file"></md-tab>
+        <md-tab id="tab-notifications" md-icon="notifications"></md-tab>
+      </md-tabs>
+  </div>
+</section>
+

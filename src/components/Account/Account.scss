@@ -1,0 +1,30 @@
+.account {
+    height: 52px;
+    border-bottom: 1px solid #dee1f3;
+    color: #212121;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    padding: 0 7px;
+    overflow: hidden;
+    .md-avatar{
+        margin: 0 7px;
+        font-size: 18.2px;
+        min-width: 28px;
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+    }
+    >span{
+        margin: 0 7px;
+        font-size: 18px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-weight: 600;
+    }
+    .md-menu-item{
+        font-family: 'Nunito', Arial, Helvetica, Sans-Serif;
+    }
+}

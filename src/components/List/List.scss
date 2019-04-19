@@ -1,0 +1,30 @@
+.list {
+    .md-list{
+        background-color: transparent;
+        padding: 0px;
+        height: 100%;
+        &-item-expand:hover, {
+            background-color:transparent!important;
+        }
+        &-item-expand{
+            border:unset!important;
+        }
+        &-item-text{
+            color: #61708b;
+        }
+    }
+    .md-list-item-content{
+        height: 36px;
+    }
+    .md-list-item-text{
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        button{
+            width: 40px;
+        }
+    }
+    .md-button:not([disabled]).md-focused:before, .md-button:not([disabled]):active:before, .md-button:not([disabled]):hover:before{
+        background: transparent;
+    } 
+}

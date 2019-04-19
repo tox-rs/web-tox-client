@@ -1,17 +1,26 @@
 <template>
   <div class="home">
-    <ToxArea/>
+    <Sidebar type="main"/>
+    <Room/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import ToxArea from '@/components/ToxArea/index.vue';
+import Sidebar from '@/components/Sidebar/index.vue';
+import Room from '@/components/Room/index.vue';
 
 @Component({
   components: {
-    ToxArea,
+    Sidebar,
+    Room,
   },
 })
 export default class Home extends Vue {}
 </script>
+<style lang="scss">
+  .home{
+    display: flex;
+    height: 100%;
+  }
+</style>

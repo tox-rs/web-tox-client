@@ -1,0 +1,12 @@
+.sidebar {
+    background-color:var(--md-theme-default-accent);
+    border-right: 1px solid var(--md-theme-default-border-primary);
+    border-left: 1px solid var(--md-theme-default-border-primary);
+}
+.md-tabs{
+    max-width: 270px;
+    background: transparent;
+}
+.md-tab {
+    padding: 0px;
+}

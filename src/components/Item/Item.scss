@@ -1,0 +1,31 @@
+.item {
+    .md-list-item.rooms,.md-list-item.people{
+        padding: 0 8px;
+        padding-bottom: 4px;
+        .md-list-item-container{
+            border-radius: 4px;
+            background-color: #fff;
+            color: #61708b;
+            .md-avatar{
+                font-size: 14.2px;
+                min-width: 24px;
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+    .md-list-item.group{
+        padding: 10px;
+        height:64px;
+        .md-list-item-container{
+            height:44px;
+            .md-list-item-text{
+                color: #2e2f32;
+                font-size: 15px;
+            }
+        }
+    }
+    .md-button:not([disabled]).md-focused:before, .md-button:not([disabled]):active:before, .md-button:not([disabled]):hover:before{
+        background: transparent;
+    } 
+}

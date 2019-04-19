@@ -1,0 +1,28 @@
+
+<section class="list">
+  <md-list v-if="type !== 'contact'">
+    <Item :type="type"/>
+  </md-list>
+  <md-list v-if="type === 'contact'">
+      <md-list-item md-expand md-expanded>
+        <span class="md-list-item-text"><span>People</span>
+        <md-button @click.stop="add"class="md-icon-button md-list-action" :md-ripple="false">
+                <md-icon class="md-primary">add_circle</md-icon>
+            </md-button>
+        </span>
+        <md-list slot="md-expand">
+            <Item type="people"/>
+        </md-list>
+      </md-list-item>
+      <md-list-item md-expand md-expanded>
+          <span class="md-list-item-text"><span>Rooms</span>
+          <md-button @click.stop="add" class="md-icon-button md-list-action" :md-ripple="false">
+                  <md-icon class="md-primary">add_circle</md-icon>
+              </md-button>
+          </span>
+          <md-list slot="md-expand">
+              <Item type="rooms"/>
+          </md-list>
+      </md-list-item>
+    </md-list>
+</section>

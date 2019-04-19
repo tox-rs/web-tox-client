@@ -1,0 +1,14 @@
+
+<section class="item">
+  <md-list-item :class="type">
+      <md-avatar class="md-avatar-icon">A</md-avatar>
+
+      <span class="md-list-item-text">Abbey Christansen</span>
+
+      <md-button class="md-icon-button md-list-action">
+        <md-icon v-if="type === 'people' || type === 'rooms'" class="md-primary">more_vert</md-icon>
+        <md-icon v-if="type === 'group'" class="md-primary" >keyboard_arrow_right</md-icon>
+      </md-button>
+    </md-list-item>
+</section>
+

@@ -1,9 +1,9 @@
 
 .tox-area {
     text-align: left;
-    padding: 20px;
+    width: 100%;
     &__content{
-        height: calc(100vh - 245px);
+        height: calc(100% - 60px);
         max-height: 100%;
         width: 100%;
         min-width: 300px;
@@ -19,11 +19,21 @@
         }
     }
     &__input{
-        height: 90px;
+        height: 60px;
         width: 100%;
+        .md-field{
+            margin: 0px;
+            background: white;
+        }
+        .md-field.md-has-textarea:not(.md-autogrow):after, .md-field.md-has-textarea:not(.md-autogrow):before {
+            border:unset;
+            border-top:1px solid var(--md-theme-default-border-accent);
+            border-bottom:1px solid var(--md-theme-default-border-accent);
+        }
         & textarea{
-            min-height: 90px!important;
-            height: 90px!important;
+            padding-top: 0px!important; 
+            min-height: 44px!important;
+            height: 44px!important;
             resize: none!important;
         }
     }
