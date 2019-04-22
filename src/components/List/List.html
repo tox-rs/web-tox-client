@@ -1,8 +1,9 @@
 
-<section class="list">
+<section class="list" :class="type">
   <md-list v-if="type !== 'contact'">
     <Item :type="type"/>
   </md-list>
+
   <md-list v-if="type === 'contact'">
       <md-list-item md-expand md-expanded>
         <span class="md-list-item-text"><span>People</span>
@@ -25,4 +26,5 @@
           </md-list>
       </md-list-item>
     </md-list>
+
 </section>

@@ -87,7 +87,17 @@ div.handle.handle-mr {
   height: 44px !important;
   padding: 0px !important;
 }
+.list .files .md-list-item-content, .list .notifications .md-list-item-content {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  height: unset !important;
+}
 .md-tabs-content {
+  height: 100% !important;
   background-color: transparent !important;
+}
+.md-tabs-container{
+  height: 100% !important;
 }
 </style>

@@ -1,14 +1,31 @@
 
 <section class="item">
   <md-list-item :class="type">
-      <md-avatar class="md-avatar-icon">A</md-avatar>
 
-      <span class="md-list-item-text">Abbey Christansen</span>
-
-      <md-button class="md-icon-button md-list-action">
+      <md-avatar v-if="type !== 'files' && type !== 'notifications'" class="md-avatar-icon">A</md-avatar>
+      <span v-if="type !== 'files' && type !== 'notifications'" class="md-list-item-text">Abbey Christansen</span>
+      <md-button v-if="type !== 'files' && type !== 'notifications'" class="md-icon-button md-list-action">
         <md-icon v-if="type === 'people' || type === 'rooms'" class="md-primary">more_vert</md-icon>
         <md-icon v-if="type === 'group'" class="md-primary" >keyboard_arrow_right</md-icon>
       </md-button>
+
+      <a v-if="type === 'files'" class="md-list-item-text"><span>File Name</span><span>75KB</span></a>
+      <span v-if="type === 'files'" class="md-list-item-text"><span>Abbey Christansen</span><span>12:34</span></span>
+
+      <a v-if="type === 'notifications'" class="md-list-item-text">
+        <span class="title">Empty Room</span>
+        <span class="sender">
+            <md-avatar class="md-avatar-icon">A</md-avatar>
+            <span>Abbey Christansen</span>
+        </span>
+        <span class=message>
+          <span>
+            <md-avatar class="md-avatar-icon">D</md-avatar>
+            <span>dluchko</span>
+          </span>
+          text message
+        </span>
+      </a>
     </md-list-item>
 </section>
 
