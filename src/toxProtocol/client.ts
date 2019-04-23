@@ -36,10 +36,6 @@ export class Client {
         ];
         msgs.forEach((m) => printMessage(m));
         break;
-      case 'info':
-        response = this.tox.info();
-
-        break;
       case 'add':
         if (action.message !== null) {
           response = this.tox.addFriend(action.toxId, action.message);
@@ -55,8 +51,18 @@ export class Client {
     }
 
     if (response !== null) {
-      response.then((res) => printMessage(JSON.stringify(res)));
+      response.then((res) => printMessage(res));
     }
+  }
+  public getInfo() {
+    const response = this.tox.info();
+    return response.then((res) => {
+      return res;
+    });
+  }
+
+  public setChatWith(num: number) {
+    this.chatWith = num;
   }
 
   public onChatMessage(message: string) {
@@ -66,18 +72,20 @@ export class Client {
     }
 
     if (this.chatWith !== null) {
-      printMessage('> ' + message);
-      this.tox
+      //printMessage(message);
+      return this.tox
         .sendFriendMessage(this.chatWith, 'Normal', message)
-        .then((response) => printMessage('< ' + JSON.stringify(response)));
+        .then((response) => {
+          return response;
+        });
     }
   }
 
   public onToxEvent(event: ToxEvent) {
-    printMessage(JSON.stringify(event));
+    printMessage(event);
   }
 }
 
-function printMessage(msg: string) {
+function printMessage(msg: any) {
   store.dispatch('saveMsg', msg);
 }

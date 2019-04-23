@@ -12,7 +12,7 @@
             </md-button>
         </span>
         <md-list slot="md-expand">
-            <Item type="people"/>
+            <Item v-for="item in people" :room="item.id" type="people"/>
         </md-list>
       </md-list-item>
       <md-list-item md-expand md-expanded>
@@ -22,7 +22,7 @@
               </md-button>
           </span>
           <md-list slot="md-expand">
-              <Item type="rooms"/>
+              <Item  v-for="item in rooms" :room="item.id" type="rooms"/>
           </md-list>
       </md-list-item>
     </md-list>

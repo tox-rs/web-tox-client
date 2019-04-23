@@ -16,6 +16,30 @@ export default Vue.extend({
       return this.$store.state.selectedTab;
     },
   },
-  mounted() {},
+  created() {
+    this.$store.dispatch('getLocalStorage');
+  },
+  mounted() {
+    if (this.$props.type === 'main') {
+      this.$store.dispatch('addRoom', {
+        name: 'Empty Room',
+        msgs: [],
+        type: 'group',
+        number: 1,
+      });
+      this.$store.dispatch('addRoom', {
+        name: 'Empty Room 1',
+        msgs: [],
+        type: 'group',
+        number: 2,
+      });
+      this.$store.dispatch('addRoom', {
+        name: 'Empty Room 2',
+        msgs: [],
+        type: 'group',
+        number: 3,
+      });
+    }
+  },
   methods: {},
 });

@@ -6,7 +6,13 @@ export default Vue.extend({
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    name: function() {
+      return this.$store.state.rooms[this.$store.state.selectedRoom]
+        ? this.$store.state.rooms[this.$store.state.selectedRoom].name
+        : 'Empty Room';
+    },
+  },
   mounted() {},
   methods: {
     tabSelect(id: any) {

@@ -7,20 +7,13 @@ export default Vue.extend({
   components: {
     RoomHeader,
     ToxArea,
-    Sidebar
+    Sidebar,
   },
   props: [],
-  data () {
-    return {
-
-    }
+  data() {
+    return {};
   },
-  computed: {
-
-  },
-  mounted () {
-  },
-  methods: {
-
-  }
+  computed: {},
+  mounted() {},
+  methods: {},
 });

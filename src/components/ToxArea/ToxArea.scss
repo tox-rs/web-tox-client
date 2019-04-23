@@ -10,11 +10,49 @@
         overflow: auto;
         &__item{
             margin: 10px 0px;
-            max-width: 45%;
+            max-width: 100%;
             display: flex;
             align-items: flex-start;
+            flex-direction: column;
+            padding: 0px 20px;
             & .avatar{
-                margin: 0px 20px;
+                display: flex;
+                align-items: center;
+                .md-avatar{
+                    margin: 0 7px;
+                    font-size: 18.2px;
+                    min-width: 28px;
+                    width: 28px;
+                    height: 28px;
+                    line-height: 28px;
+                }
+                .name{
+                    margin-left:20px;
+                }
+            }
+            & .content{
+                display: flex;
+                padding: 5px;
+                padding-top: 4px;
+                padding-bottom: 2px;
+                width: 100%;
+                &.send{
+                    opacity: .5;
+                }
+                &>span{
+                    display: block;
+                    visibility: hidden;
+                    white-space: nowrap;
+                    color: #acacac;
+                    font-size: 10px;
+                    margin-right: 20px;
+                }
+                &:hover{
+                    background-color: #f7f7f7;
+                    &>span{
+                        visibility: visible;
+                    }
+                }
             }
         }
     }

@@ -1,10 +1,20 @@
 <section class="tox-area">
   <md-content class="tox-area__content">
-    <md-content class="tox-area__content__item" v-for="item in content">
-      <div class="avatar"><md-avatar class="md-avatar-icon">A</md-avatar></div>
-      <div class="content">
-        <div class="name">A</div>
-        <div class="msg">{{ item }}</div>
+    <md-content class="tox-area__content__item" v-for="(item, index) in content">
+      <div class="avatar" v-if="index === 0 || content[index-1].author !== item.author">
+        <md-avatar class="md-avatar-icon">{{
+          item.author[0].toUpperCase()
+        }}</md-avatar>
+        <div class="name">{{ item.author }}</div>
+      </div>
+      <div class="content" :class="item.status ? 'ok' : 'send'" >
+        <span>{{
+          new Date(item.date).toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        }}</span>
+        <div class="msg">{{ item.value }}</div>
       </div>
     </md-content>
   </md-content>

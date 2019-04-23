@@ -5,11 +5,12 @@ export default Vue.extend({
   props: [],
   data () {
     return {
-
     }
   },
   computed: {
-
+    name: function(){
+      return this.$store.state.info.name;
+    }
   },
   mounted () {
 

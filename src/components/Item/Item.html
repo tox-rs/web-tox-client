@@ -1,9 +1,9 @@
 
-<section class="item">
+<section class="item" @click="click">
   <md-list-item :class="type">
 
-      <md-avatar v-if="type !== 'files' && type !== 'notifications'" class="md-avatar-icon">A</md-avatar>
-      <span v-if="type !== 'files' && type !== 'notifications'" class="md-list-item-text">Abbey Christansen</span>
+      <md-avatar v-if="type !== 'files' && type !== 'notifications'" class="md-avatar-icon">{{name[0].toUpperCase()}}</md-avatar>
+      <span v-if="type !== 'files' && type !== 'notifications'" class="md-list-item-text">{{name}}</span>
       <md-button v-if="type !== 'files' && type !== 'notifications'" class="md-icon-button md-list-action">
         <md-icon v-if="type === 'people' || type === 'rooms'" class="md-primary">more_vert</md-icon>
         <md-icon v-if="type === 'group'" class="md-primary" >keyboard_arrow_right</md-icon>
