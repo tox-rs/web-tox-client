@@ -108,4 +108,17 @@ div.handle.handle-mr {
     width: 100%;
     max-width: 600px;
   }
+  @media (max-width: 1300px) {
+    .tox-area .msg{max-width: 450px!important;}
+  }
+  @media (max-width: 750px) {
+  .sidebar {display: none;}
+  .room-header .md-tabs{display: none;}
+  .room-header .divider{display: none;}
+  .room .sidebar{ width: 100%}
+  .room .sidebar .md-tabs{ max-width: 100%}
+}
+@media (max-width: 500px) {
+  .tox-area .msg{max-width: 250px!important;}
+}
 </style>
