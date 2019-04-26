@@ -11,7 +11,8 @@
 @include md-register-theme(
   'default',
   (
-    primary: #acb8d0,
+    default: #acb8d0,
+    primary: #03b381,
     // The primary color of your brand
       accent: #f2f5f8,
     // The secondary color of your brand
@@ -47,9 +48,11 @@ div.handle.handle-mr {
     'BlinkMacSystemFont', sans-serif !important;
 }
 .md-icon {
-  color: var(--md-theme-default-primary) !important;
+  color: var(--md-theme-default-default) !important;
 }
-
+.md-raised {
+  color: white !important;
+}
 .toolbar .md-icon-button {
   width: 35px;
   min-width: 35px;
@@ -87,7 +90,8 @@ div.handle.handle-mr {
   height: 44px !important;
   padding: 0px !important;
 }
-.list .files .md-list-item-content, .list .notifications .md-list-item-content {
+.list .files .md-list-item-content,
+.list .notifications .md-list-item-content {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -97,7 +101,11 @@ div.handle.handle-mr {
   height: 100% !important;
   background-color: transparent !important;
 }
-.md-tabs-container{
+.md-tabs-container {
   height: 100% !important;
 }
+#prompt {
+    width: 100%;
+    max-width: 600px;
+  }
 </style>

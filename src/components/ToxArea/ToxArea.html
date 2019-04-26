@@ -1,5 +1,5 @@
 <section class="tox-area">
-  <md-content class="tox-area__content">
+  <md-content class="tox-area__content" v-chat-scroll>
     <md-content class="tox-area__content__item" v-for="(item, index) in content">
       <div class="avatar" v-if="index === 0 || content[index-1].author !== item.author">
         <md-avatar class="md-avatar-icon">{{

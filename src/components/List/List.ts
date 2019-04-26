@@ -28,7 +28,7 @@ export default Vue.extend({
   mounted() {},
   methods: {
     add() {
-      console.log('click');
+      this.$store.commit('DIALOG_TRIGGER');
     },
   },
 });

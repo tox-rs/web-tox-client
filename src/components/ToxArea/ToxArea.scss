@@ -1,78 +1,83 @@
-
 .tox-area {
-    text-align: left;
+  text-align: left;
+  width: 100%;
+  &__content {
+    height: calc(100% - 60px);
+    max-height: 100%;
     width: 100%;
-    &__content{
-        height: calc(100% - 60px);
-        max-height: 100%;
+    min-width: 300px;
+    overflow: auto;
+    &__item {
+      margin: 10px 0px;
+      max-width: 100%;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      padding: 0px 20px;
+      & .avatar {
+        display: flex;
+        align-items: center;
+        .md-avatar {
+          margin: 0 7px;
+          font-size: 18.2px;
+          min-width: 28px;
+          width: 28px;
+          height: 28px;
+          line-height: 28px;
+        }
+        .name {
+          margin-left: 20px;
+        }
+      }
+      & .content {
+        display: flex;
+        padding: 5px;
+        padding-top: 4px;
+        padding-bottom: 2px;
         width: 100%;
-        min-width: 300px;
-        overflow: auto;
-        &__item{
-            margin: 10px 0px;
-            max-width: 100%;
-            display: flex;
-            align-items: flex-start;
-            flex-direction: column;
-            padding: 0px 20px;
-            & .avatar{
-                display: flex;
-                align-items: center;
-                .md-avatar{
-                    margin: 0 7px;
-                    font-size: 18.2px;
-                    min-width: 28px;
-                    width: 28px;
-                    height: 28px;
-                    line-height: 28px;
-                }
-                .name{
-                    margin-left:20px;
-                }
-            }
-            & .content{
-                display: flex;
-                padding: 5px;
-                padding-top: 4px;
-                padding-bottom: 2px;
-                width: 100%;
-                &.send{
-                    opacity: .5;
-                }
-                &>span{
-                    display: block;
-                    visibility: hidden;
-                    white-space: nowrap;
-                    color: #acacac;
-                    font-size: 10px;
-                    margin-right: 20px;
-                }
-                &:hover{
-                    background-color: #f7f7f7;
-                    &>span{
-                        visibility: visible;
-                    }
-                }
-            }
+        &.send {
+          opacity: 0.5;
         }
+        .msg {
+          word-wrap: break-word;
+          max-width: 800px;
+        }
+        & > span {
+          display: block;
+          visibility: hidden;
+          white-space: nowrap;
+          color: #acacac;
+          font-size: 10px;
+          width: 52px;
+          margin-right: 20px;
+        }
+        &:hover {
+          background-color: #f7f7f7;
+          & > span {
+            visibility: visible;
+          }
+        }
+      }
     }
-    &__input{
-        height: 60px;
-        width: 100%;
-        .md-field{
-            margin: 0px;
-            background: white;
-        }
-        .md-field.md-has-textarea:not(.md-autogrow):after, .md-field.md-has-textarea:not(.md-autogrow):before {
-            border:unset;
-            border-top:1px solid var(--md-theme-default-border-accent);
-            border-bottom:1px solid var(--md-theme-default-border-accent);
-        }
-        & textarea{
-            padding-top: 0px!important; 
-            min-height: 44px!important;
-            height: 44px!important;
-            resize: none!important;
-        }
+  }
+  &__input {
+    height: 60px;
+    width: 100%;
+    .md-field {
+      margin: 0px;
+      background: white;
     }
+    .md-field.md-has-textarea:not(.md-autogrow):after,
+    .md-field.md-has-textarea:not(.md-autogrow):before {
+      border: unset;
+      border-top: 1px solid var(--md-theme-default-border-accent);
+      border-bottom: 1px solid var(--md-theme-default-border-accent);
+    }
+    & textarea {
+      padding-top: 0px !important;
+      min-height: 44px !important;
+      height: 44px !important;
+      resize: none !important;
+    }
+  }
 }

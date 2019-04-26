@@ -3,9 +3,11 @@ import Vuex from 'vuex';
 import 'ws-tox-protocol';
 import { Client } from '@/toxProtocol/client';
 import { LZMA } from 'lzma/src/lzma_worker.js';
+import { IndexedDB } from '@/db/index';
 
 Vue.use(Vuex);
 const client = new Client();
+const db = new IndexedDB();
 interface Room {
   name: string;
   type: string;
@@ -21,6 +23,7 @@ interface Msg {
 const info: Info = {};
 const rooms: Room[] = [];
 const nums: number[] = [];
+let readed = false;
 export default new Vuex.Store({
   state: {
     rooms: rooms,
@@ -28,6 +31,8 @@ export default new Vuex.Store({
     info: info,
     selectedTab: 'tab-person',
     selectedRoom: 0,
+    dialogActive: false,
+    dialogType: 'prompt',
   },
   mutations: {
     INIT_STATE(state, value) {
@@ -49,6 +54,11 @@ export default new Vuex.Store({
         number: value.number,
       });
     },
+    UPDATE_ROOM(state, value) {
+      const newRooms = [...state.rooms];
+      newRooms[state.numRooms[value.number]].name = value.name;
+      state.rooms = newRooms;
+    },
     SAVE_MSG(state, value) {
       state.rooms[value.room].msgs.push({
         value: value.msg,
@@ -68,16 +78,17 @@ export default new Vuex.Store({
     SELECT_TAB(state, value) {
       state.selectedTab = value;
     },
+    DIALOG_TRIGGER(state) {
+      state.dialogActive = !state.dialogActive;
+    },
   },
   actions: {
     initUser(context) {
-      // result = LZMA.decompress(result);
-      // console.log(result);
       client.getInfo().then((value) => {
         context.commit('INIT_USER', value);
         context.state.info.friends.forEach((element: any) => {
           context.dispatch('addRoom', {
-            name: element.name,
+            name: element.name || 'New room',
             number: element.number,
             msgs: [],
             type: 'people',
@@ -86,9 +97,18 @@ export default new Vuex.Store({
       });
       context.dispatch('setLocalStorage');
     },
+    addFriend(context, value) {
+      const response = client.tox.addFriend(value, 'Hello');
+      if (response !== null) {
+        response.then((res) => console.log(res));
+      }
+    },
     addRoom(context, value) {
       if (context.state.numRooms[value.number] === undefined) {
         context.commit('ADD_ROOM', value);
+        context.dispatch('setLocalStorage');
+      } else {
+        context.commit('UPDATE_ROOM', value);
         context.dispatch('setLocalStorage');
       }
     },
@@ -125,15 +145,25 @@ export default new Vuex.Store({
       context.dispatch('setLocalStorage');
     },
     setLocalStorage(context) {
-      const result = LZMA.compress(JSON.stringify(context.state));
-      localStorage.setItem('store', JSON.stringify(result));
+      //const result = LZMA.compress(JSON.stringify(context.state));
+      if (readed) {
+        db.setStore(JSON.stringify(context.state));
+      }
+      //localStorage.setItem('store', JSON.stringify(result));
     },
     getLocalStorage(context) {
-      if (localStorage.store) {
-        const result = LZMA.decompress(JSON.parse(localStorage.store));
-        context.commit('INIT_STATE', JSON.parse(result));
-        client.setChatWith(context.state.rooms[context.state.selectedRoom].number);
-      }
+      db.getStore().then((res) => {
+        if (res) {
+          //const result = LZMA.decompress(JSON.parse(localStorage.store));
+          context.commit('INIT_STATE', JSON.parse(res.value));
+          readed = true;
+          client.setChatWith(
+            context.state.rooms[context.state.selectedRoom].number,
+          );
+        } else {
+          readed = true;
+        }
+      });
     },
   },
 });

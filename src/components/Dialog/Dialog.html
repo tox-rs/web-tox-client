@@ -1,5 +1,14 @@
 
 <section class="dialog">
-  <h1>dialog Component</h1>
+    <md-dialog-prompt
+    id="prompt"
+    :md-active.sync="active"
+    v-model="value"
+    md-title="Start a chat"
+    md-content="Who would you like to communicate with?"
+    md-input-placeholder="Tox ID"
+    md-confirm-text="OK" 
+    @md-confirm="onConfirm"/>
+    
 </section>
 

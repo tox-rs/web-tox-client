@@ -20,15 +20,20 @@ export default Vue.extend({
     setTimeout(function() {
       self.$store.dispatch('initUser');
     }, 100);
+    setInterval(function() {
+      self.$store.dispatch('initUser');
+    }, 5000);
   },
   mounted() {},
   methods: {
     submit(ev: any) {
-      this.$store.dispatch('sendMsg', {
-        room: this.$store.state.selectedRoom,
-        msg: this.message,
-        author: this.$store.state.info.name,
-      });
+      if(this.message){
+        this.$store.dispatch('sendMsg', {
+          room: this.$store.state.selectedRoom,
+          msg: this.message,
+          author: this.$store.state.info.name,
+        });
+      }
       this.message = '';
     },
   },

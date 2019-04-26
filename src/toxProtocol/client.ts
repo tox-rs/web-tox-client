@@ -51,7 +51,7 @@ export class Client {
     }
 
     if (response !== null) {
-      response.then((res) => printMessage(res));
+      response.then((res) => console.log(res));
     }
   }
   public getInfo() {
@@ -82,7 +82,10 @@ export class Client {
   }
 
   public onToxEvent(event: ToxEvent) {
-    printMessage(event);
+    console.log(event);
+    if (event.event === 'FriendMessage') {
+      printMessage(event);
+    }
   }
 }
 

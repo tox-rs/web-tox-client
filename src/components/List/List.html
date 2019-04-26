@@ -7,22 +7,22 @@
   <md-list v-if="type === 'contact'">
       <md-list-item md-expand md-expanded>
         <span class="md-list-item-text"><span>People</span>
-        <md-button @click.stop="add"class="md-icon-button md-list-action" :md-ripple="false">
-                <md-icon class="md-primary">add_circle</md-icon>
-            </md-button>
+        <md-button @click.stop="add" class="md-icon-button md-list-action" :md-ripple="false">
+            <md-icon class="md-primary">add_circle</md-icon>
+        </md-button>
         </span>
         <md-list slot="md-expand">
-            <Item v-for="item in people" :room="item.id" type="people"/>
+            <Item v-for="item in people" :room="item" type="people"/>
         </md-list>
       </md-list-item>
       <md-list-item md-expand md-expanded>
           <span class="md-list-item-text"><span>Rooms</span>
           <md-button @click.stop="add" class="md-icon-button md-list-action" :md-ripple="false">
-                  <md-icon class="md-primary">add_circle</md-icon>
-              </md-button>
+                <md-icon class="md-primary">add_circle</md-icon>
+          </md-button>
           </span>
           <md-list slot="md-expand">
-              <Item  v-for="item in rooms" :room="item.id" type="rooms"/>
+              <Item  v-for="item in rooms" :room="item" type="rooms"/>
           </md-list>
       </md-list-item>
     </md-list>
