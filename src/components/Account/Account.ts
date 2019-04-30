@@ -3,19 +3,14 @@ export default Vue.extend({
   name: 'account',
   components: {},
   props: [],
-  data () {
-    return {
-    }
+  data() {
+    return {};
   },
   computed: {
-    name: function(){
+    name(): string {
       return this.$store.state.info.name;
-    }
+    },
   },
-  mounted () {
-
-  },
-  methods: {
-
-  }
+  mounted() {},
+  methods: {},
 });

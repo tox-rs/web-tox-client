@@ -8,20 +8,18 @@ export default Vue.extend({
   },
   computed: {
     active: {
-      get: function() {
+      get(): boolean {
         if (this.$store.state.dialogActive) {
           const self = this;
-          setTimeout(function() {
-            console.log(self);
-            self.$children[0].$children[0].$children[3].$children[1].$el
-            .classList.add(
+          setTimeout(() => {
+            self.$children[0].$children[0].$children[3].$children[1].$el.classList.add(
               'md-raised',
             );
           }, 100);
         }
         return this.$store.state.dialogActive;
       },
-      set: function() {
+      set() {
         this.$store.commit('DIALOG_TRIGGER');
       },
     },

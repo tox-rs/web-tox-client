@@ -4,7 +4,7 @@ import { db } from './appdb';
 
 export class IndexedDB {
   public async setStore(val: string) {
-    await db.transaction('rw', db.store, async function() {
+    await db.transaction('rw', db.store, async () => {
       const store = await db.store.get(1);
       if (store) {
         await db.store.update(1, { value: val });

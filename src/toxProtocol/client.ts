@@ -1,6 +1,13 @@
 import { Tox } from './tox';
 import { Commander } from './commander';
 import store from '@/store';
+import {
+  ToxResponse,
+  ToxEvent,
+  ToxRequest,
+  MessageType,
+  Events,
+} from 'ws-tox-protocol';
 export class Client {
   public tox: Tox;
   public commander: Commander;
@@ -72,7 +79,7 @@ export class Client {
     }
 
     if (this.chatWith !== null) {
-      //printMessage(message);
+      // printMessage(message);
       return this.tox
         .sendFriendMessage(this.chatWith, 'Normal', message)
         .then((response) => {
@@ -83,8 +90,21 @@ export class Client {
 
   public onToxEvent(event: ToxEvent) {
     console.log(event);
-    if (event.event === 'FriendMessage') {
-      printMessage(event);
+    switch (event.event) {
+      case 'FriendMessage':
+        event = event as Events.FriendMessage;
+        printMessage(event);
+        break;
+      case 'FriendTyping':
+        event = event as Events.FriendTyping;
+        store.dispatch('setTyping', event);
+        break;
+      case 'FriendReadReceipt':
+        event = event as Events.FriendReadReceipt;
+        store.dispatch('changeStatusMsg', event.message_id);
+        break;
+      default:
+        break;
     }
   }
 }

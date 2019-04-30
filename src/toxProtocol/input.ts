@@ -7,12 +7,12 @@ export class Input {
 
   public readWord(): string | null {
     const split = this.input.split(' ');
-    const word_ix = split.findIndex((s) => s !== '');
+    const wordIx = split.findIndex((s) => s !== '');
 
-    if (word_ix !== -1) {
-      this.input = split.slice(word_ix + 1).join(' ');
+    if (wordIx !== -1) {
+      this.input = split.slice(wordIx + 1).join(' ');
 
-      return split[word_ix];
+      return split[wordIx];
     }
 
     return null;

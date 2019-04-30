@@ -1,9 +1,11 @@
 
 <section class="list" :class="type">
-  <md-list v-if="type !== 'contact'">
+  <md-list v-if="type !== 'contact' && type !== 'group'">
     <Item :type="type"/>
   </md-list>
-
+  <md-list v-if="type === 'group'">
+        <Item v-for="item in contacts" :contact="item" :type="type"/>
+  </md-list>
   <md-list v-if="type === 'contact'">
       <md-list-item md-expand md-expanded>
         <span class="md-list-item-text"><span>People</span>

@@ -29,7 +29,7 @@ export class Commander {
           friend = null;
         }
 
-        return { action: 'info', friend: friend };
+        return { action: 'info', friend };
       }
       case 'add': {
         const toxId = input.readWord();

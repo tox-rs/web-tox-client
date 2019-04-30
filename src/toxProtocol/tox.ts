@@ -1,9 +1,9 @@
-import 'ws-tox-protocol';
+import {ToxResponse, ToxEvent, ToxRequest, MessageType} from 'ws-tox-protocol';
 
 export class Tox {
   public socket: WebSocket;
   public eventTarget: EventTarget;
-  public requestQueue: [(value: ToxResponse) => void, (reason: any) => void][];
+  public requestQueue: Array<[(value: ToxResponse) => void, (reason: any) => void]>;
 
   constructor() {
     const socket = new WebSocket('ws://127.0.0.1:2794');

@@ -20,8 +20,7 @@ import Dialog from '@/components/Dialog/index.vue';
   },
 })
 export default class Home extends Vue {
-  swipeLeft(): void {
-    console.log(navigator);
+  public swipeLeft(): void {
     if (
       navigator.appVersion.match(/iPhone/) ||
       navigator.appVersion.match(/Android/)
@@ -43,7 +42,7 @@ export default class Home extends Vue {
       }
     }
   }
-  swipeRight(): void {
+  public swipeRight(): void {
     if (
       navigator.appVersion.match(/iPhone/) ||
       navigator.appVersion.match(/Android/)

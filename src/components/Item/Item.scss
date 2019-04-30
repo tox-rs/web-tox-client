@@ -1,4 +1,11 @@
 .item {
+  .md-list-item-content .md-list-action:last-of-type{
+    margin: 0 -10px 0 0;
+  }
+  .md-field{
+    margin:0px;
+    margin-top: -16px;
+  }
   .md-list-item.rooms,
   .md-list-item.people {
     padding: 0 8px;

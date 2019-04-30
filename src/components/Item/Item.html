@@ -1,29 +1,81 @@
-
 <section class="item" @click="click">
-  <md-list-item :class="type">
-
-      <md-avatar v-if="type === 'people' && type !== 'rooms'" class="md-avatar-icon" :class="status.toLowerCase()">{{room.name[0].toUpperCase()}}</md-avatar>
-      <span v-if="type === 'people' && type !== 'rooms'" class="md-list-item-text">{{room.name}}</span>
-      <md-button v-if="type === 'people' && type !== 'rooms'" class="md-icon-button md-list-action">
+  <template v-if="type === 'people' && type !== 'rooms'">
+    <md-list-item :class="type">
+      <md-avatar class="md-avatar-icon" :class="status.toLowerCase()">{{
+        room.name[0].toUpperCase()
+      }}</md-avatar>
+      <span class="md-list-item-text">{{ room.name }}</span>
+      <md-button class="md-icon-button md-list-action">
         <md-icon class="md-primary">more_vert</md-icon>
       </md-button>
+    </md-list-item>
+  </template>
 
-      <md-avatar v-if="type === 'group'" class="md-avatar-icon">N</md-avatar>
-      <span v-if="type === 'group'" class="md-list-item-text">NULL</span>
-      <md-button v-if="type === 'group'" class="md-icon-button md-list-action">
-        <md-icon class="md-primary" >keyboard_arrow_right</md-icon>
+  <template v-if="type === 'group' && !selectedContact">
+    <md-list-item :class="type">
+      <md-avatar class="md-avatar-icon">{{
+        contact.name[0].toUpperCase()
+      }}</md-avatar>
+      <span class="md-list-item-text">{{ contact.name }}</span>
+      <md-button class="md-icon-button md-list-action">
+        <md-icon class="md-primary">keyboard_arrow_right</md-icon>
       </md-button>
+    </md-list-item>
+  </template>
 
-      <a v-if="type === 'files'" class="md-list-item-text"><span>File Name</span><span>75KB</span></a>
-      <span v-if="type === 'files'" class="md-list-item-text"><span>Abbey Christansen</span><span>12:34</span></span>
+  <template
+    v-if="type === 'group' && selectedContact && (selectedContact.public_key === contact.public_key || selectedContact.tox_id === contact.tox_id)"
+  >
+    <md-list-item :class="'group_detail'">
+      <md-button
+        @click.stop="click('stop')"
+        class="md-icon-button md-list-action"
+      >
+        <md-icon class="md-primary">keyboard_arrow_left</md-icon>
+      </md-button>
+      <md-list class="detail">
+        <md-subheader>Tox ID</md-subheader>
+        <md-list-item>
+          <md-field>
+            <md-input
+              v-model="contact.public_key || contact.tox_id"
+              readonly
+            ></md-input>
+          </md-field>
+          <!-- <span class="md-list-item-text">{{
+            contact.public_key || contact.tox_id
+          }}</span> -->
+        </md-list-item>
+        <md-subheader>Name</md-subheader>
+        <md-list-item>
+          <span class="md-list-item-text">{{ contact.name }}</span>
+        </md-list-item>
+        <md-subheader>Status</md-subheader>
+        <md-list-item>
+          <span class="md-list-item-text">{{ contact.status_message }}</span>
+        </md-list-item>
+      </md-list>
+    </md-list-item>
+  </template>
 
-      <a v-if="type === 'notifications'" class="md-list-item-text">
+  <template v-if="type === 'files'">
+    <md-list-item :class="type">
+      <a class="md-list-item-text"><span>File Name</span><span>75KB</span></a>
+      <span class="md-list-item-text"
+        ><span>Abbey Christansen</span><span>12:34</span></span
+      >
+    </md-list-item>
+  </template>
+
+  <template v-if="type === 'notifications'">
+    <md-list-item :class="type">
+      <a class="md-list-item-text">
         <span class="title">Empty Room</span>
         <span class="sender">
-            <md-avatar class="md-avatar-icon">A</md-avatar>
-            <span>Abbey Christansen</span>
+          <md-avatar class="md-avatar-icon">A</md-avatar>
+          <span>Abbey Christansen</span>
         </span>
-        <span class=message>
+        <span class="message">
           <span>
             <md-avatar class="md-avatar-icon">D</md-avatar>
             <span>dluchko</span>
@@ -32,5 +84,5 @@
         </span>
       </a>
     </md-list-item>
+  </template>
 </section>
-

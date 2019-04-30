@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
     "strict": true,
-    "module": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "jsx": "preserve",
     "importHelpers": true,
@@ -13,7 +13,7 @@
     "strictPropertyInitialization": false,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": ["webpack-env", "jest"],
+    "types": ["webpack-env", "jest", "vue"],
     "paths": {
       "@/*": ["src/*"]
     },

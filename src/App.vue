@@ -90,6 +90,24 @@ div.handle.handle-mr {
   height: 44px !important;
   padding: 0px !important;
 }
+.list .group_detail .md-list-item-content {
+  height: unset!important;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+}
+.md-list.detail{
+  .md-subheader{
+    min-height: 20px;
+    margin-top: 10px;
+  }
+  background-color: transparent;
+  & .md-list-item-content{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
 .list .files .md-list-item-content,
 .list .notifications .md-list-item-content {
   align-items: flex-start;
