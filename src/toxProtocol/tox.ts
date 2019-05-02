@@ -6,7 +6,9 @@ export class Tox {
   public requestQueue: Array<[(value: ToxResponse) => void, (reason: any) => void]>;
 
   constructor() {
-    const socket = new WebSocket('ws://127.0.0.1:2794');
+    const apiUrl = window.location.origin == 'http://localhost:8081' ? 'ws://127.0.0.1:2794' : 'ws://54.146.54.115:2794/ws';
+
+    const socket = new WebSocket(apiUrl);
     socket.addEventListener('message', (ev) => this.onWsMessage(ev));
 
     const target = new EventTarget();
