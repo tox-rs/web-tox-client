@@ -30,15 +30,6 @@ export default Vue.extend({
       }
     },
   },
-  created() {
-    const self = this;
-    setTimeout(function() {
-      self.$store.dispatch('initUser');
-    }, 100);
-    setInterval(function() {
-      self.$store.dispatch('initUser');
-    }, 5000);
-  },
   mounted() {},
   methods: {
     submit(ev: any) {

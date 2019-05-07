@@ -1,9 +1,17 @@
-import {ToxResponse, ToxEvent, ToxRequest, MessageType} from 'ws-tox-protocol';
+import {
+  ToxResponse,
+  ToxEvent,
+  ToxRequest,
+  MessageType,
+  Requests,
+} from 'ws-tox-protocol';
 
 export class Tox {
   public socket: WebSocket;
   public eventTarget: EventTarget;
-  public requestQueue: Array<[(value: ToxResponse) => void, (reason: any) => void]>;
+  public requestQueue: Array<
+    [(value: ToxResponse) => void, (reason: any) => void]
+  >;
 
   constructor() {
     const socket = new WebSocket('ws://127.0.0.1:2794');
@@ -79,6 +87,14 @@ export class Tox {
         message,
       };
 
+      this.socket.send(JSON.stringify(request));
+      this.requestQueue.push([accept, reject]);
+    });
+  }
+
+  public sendRequest(req: object) {
+    return new Promise((accept, reject) => {
+      const request = req as ToxRequest;
       this.socket.send(JSON.stringify(request));
       this.requestQueue.push([accept, reject]);
     });

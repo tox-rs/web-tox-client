@@ -8,10 +8,12 @@ Vue.use(Vuex);
 const client = new Client();
 const db = new IndexedDB();
 interface Room {
+  id: number;
   name: string;
   type: string;
-  number: number;
   typing?: number | null;
+  friend?: number;
+  peers?: number[];
   msgs: Msg[];
 }
 
@@ -23,19 +25,20 @@ interface Msg {
   message_id?: number;
 }
 
-const info: Responses.Info = {} as Responses.Info;
+const info = {} as Responses.Info;
 const rooms: Room[] = [];
 const nums: number[] = [];
 const objs: object[] = [];
-let readed = false;
+
 export default new Vuex.Store({
   state: {
     rooms,
-    numRooms: nums,
+    friendRooms: [...nums],
+    conferenceRooms: [...nums],
     numMsg: objs,
     info,
     selectedTab: 'tab-person',
-    selectedRoom: 0,
+    selectedRoom: 1,
     dialogActive: false,
     dialogType: 'prompt',
     selectedContact: null,
@@ -43,31 +46,32 @@ export default new Vuex.Store({
   mutations: {
     INIT_STATE(state, value) {
       state.rooms = value.rooms;
-      state.numRooms = value.numRooms;
+      state.friendRooms = value.friendRooms;
       state.info = value.info;
-      state.selectedTab = value.selectedTab;
-      state.selectedRoom = value.selectedRoom;
     },
     INIT_USER(state, value) {
       state.info = value;
     },
     ADD_ROOM(state, value) {
-      state.numRooms[value.number] = state.rooms.length;
       state.rooms.push({
+        id: state.rooms.length,
         name: value.name,
         msgs: value.msgs,
         type: value.type,
-        number: value.number,
+        friend: value.friend,
+        peers: value.peers,
         typing: null,
       });
+      state.friendRooms[value.friend] = state.rooms.length;
     },
     UPDATE_ROOM(state, value) {
       const newRooms = [...state.rooms];
-      if (value.name) {
-        newRooms[state.numRooms[value.number]].name = value.name;
-      }
       if (value.typing !== undefined) {
-        newRooms[state.numRooms[value.number]].typing = value.typing;
+        newRooms[state.friendRooms[value.friend]].typing = value.typing;
+      } else if (value.msgs.length > 0) {
+        newRooms[state.friendRooms[value.friend]].msgs = value.msgs;
+      } else {
+        newRooms[state.friendRooms[value.friend]].name = value.name;
       }
       state.rooms = newRooms;
     },
@@ -105,16 +109,15 @@ export default new Vuex.Store({
     initUser(context) {
       client.getInfo().then((value) => {
         context.commit('INIT_USER', value);
+        db.updateInfo(value);
         context.state.info.friends.forEach((element: any) => {
           context.dispatch('addRoom', {
             name: element.name || 'New room',
-            number: element.number,
             msgs: [],
-            type: 'people',
+            type: 'friend',
+            friend: element.number,
           });
         });
-        context.dispatch('selectRoom', 0);
-        context.dispatch('setLocalStorage');
       });
     },
     addFriend(context, value) {
@@ -124,80 +127,86 @@ export default new Vuex.Store({
       }
     },
     addRoom(context, value) {
-      if (context.state.numRooms[value.number] === undefined) {
-        context.commit('ADD_ROOM', value);
-        context.dispatch('setLocalStorage');
+      if (context.state.friendRooms[value.friend] === undefined) {
+        db.addRoom(value as Room).then((res) => {
+          if (res) {
+            context.commit('ADD_ROOM', value);
+          }
+        });
       } else {
-        context.commit('UPDATE_ROOM', value);
-        context.dispatch('setLocalStorage');
+        db.updateRoom(value as Room).then((res) => {
+          if (res) {
+            context.commit('UPDATE_ROOM', value);
+          }
+        });
       }
     },
     setTyping(context, value) {
-      const data = {} as Room;
+      const data = {} as any;
       if (value.is_typing) {
-        data.number = value.friend;
+        data.friend = value.friend;
         data.typing = value.friend;
       } else {
-        data.number = value.friend;
+        data.friend = value.friend;
         data.typing = null;
       }
       context.commit('UPDATE_ROOM', data);
     },
     sendMsg(context, value) {
-      if (client.chatWith !== null) {
-        client.tox
-          .sendFriendMessage(client.chatWith, 'Normal', value.msg)
-          .then((response) => {
-            if (response.response === 'MessageSent') {
-              value.message_id = response.message_id;
-              context.commit('SAVE_MSG', value);
-            }
-            context.dispatch('setLocalStorage');
-          });
+      const room = context.state.rooms[context.state.selectedRoom];
+      let request: any;
+      if (room.friend !== undefined) {
+        request = {
+          request: 'SendFriendMessage',
+          friend: room.friend,
+          kind: 'Normal',
+          message: value.msg,
+        };
       }
+      client.tox.sendRequest(request).then((res: any) => {
+        if (res.response === 'MessageSent') {
+          value.message_id = res.message_id;
+          context.commit('SAVE_MSG', value);
+          db.updateRoom(room);
+        }
+      });
     },
     changeStatusMsg(context, value) {
       const data = context.state.numMsg[value] as any;
       data.status = 'readed';
       context.commit('CHANGE_STATUS_MSG', data);
+      db.updateRoom(context.state.rooms[data.room]);
     },
     saveMsg(context, value) {
       const data = {
-        room: context.state.numRooms[value.friend],
+        room: context.state.friendRooms[value.friend],
         msg: value.message,
         author: context.state.info.friends[value.friend].name,
         status: 'readed',
       };
       context.commit('SAVE_MSG', data);
-      context.dispatch('setLocalStorage');
+      db.updateRoom(context.state.rooms[data.room]);
     },
     selectTab(context, value) {
       context.commit('SELECT_TAB', value);
-      context.dispatch('setLocalStorage');
     },
     selectRoom(context, value) {
       if (context.state.rooms.length) {
-        client.setChatWith(context.state.rooms[value].number);
         context.commit('SELECT_ROOM', value);
-        context.dispatch('setLocalStorage');
       }
     },
-    setLocalStorage(context) {
-      if (readed) {
-        db.setStore(JSON.stringify(context.state));
-      }
-    },
-    getLocalStorage(context) {
-      db.getStore().then((res) => {
+    getData(context) {
+      db.getData().then((res) => {
         if (res) {
-          context.commit('INIT_STATE', JSON.parse(res.value));
-          readed = true;
-          client.setChatWith(
-            context.state.rooms[context.state.selectedRoom].number,
-          );
+          context.commit('INIT_STATE', res);
+          db.readed = true;
         } else {
-          readed = true;
+          db.readed = true;
         }
+        context.dispatch('initUser');
+        setInterval(() => {
+          context.dispatch('initUser');
+        }, 5000);
       });
     },
   },

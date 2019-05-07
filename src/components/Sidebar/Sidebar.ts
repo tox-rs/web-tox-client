@@ -18,7 +18,7 @@ export default Vue.extend({
   },
   created() {
     if (this.type === 'main') {
-      this.$store.dispatch('getLocalStorage');
+      this.$store.dispatch('getData');
     }
   },
   mounted() {},

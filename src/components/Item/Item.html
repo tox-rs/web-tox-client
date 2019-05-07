@@ -1,5 +1,5 @@
 <section class="item" @click="click">
-  <template v-if="type === 'people' && type !== 'rooms'">
+  <template v-if="type === 'friend' && type !== 'conference'">
     <md-list-item :class="type">
       <md-avatar class="md-avatar-icon" :class="status.toLowerCase()">{{
         room.name[0].toUpperCase()
@@ -11,7 +11,7 @@
     </md-list-item>
   </template>
 
-  <template v-if="type === 'group' && !selectedContact">
+  <template v-if="type === 'group' && !selectedContact && contact.name">
     <md-list-item :class="type">
       <md-avatar class="md-avatar-icon">{{
         contact.name[0].toUpperCase()
@@ -42,9 +42,6 @@
               readonly
             ></md-input>
           </md-field>
-          <!-- <span class="md-list-item-text">{{
-            contact.public_key || contact.tox_id
-          }}</span> -->
         </md-list-item>
         <md-subheader>Name</md-subheader>
         <md-list-item>
