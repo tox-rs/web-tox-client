@@ -13,7 +13,7 @@ export class IndexedDB {
         val.id = 1;
         await db.info.add(val);
       } else {
-        db.rooms.update(1, val);
+        db.info.update(1, val);
       }
     });
   }
@@ -37,7 +37,6 @@ export class IndexedDB {
           val.msgs.length > 0 ||
           (room.msgs.length === 0 && val.msgs.length === 0)
         ) {
-          console.log(room);
           db.rooms.update(room.id, val);
         }
       }

@@ -53,6 +53,10 @@ export default new Vuex.Store({
       state.info = value;
     },
     ADD_ROOM(state, value) {
+      if (state.rooms.length === 0) {
+        state.rooms.push({} as Room);
+      }
+      state.friendRooms[value.friend] = state.rooms.length;
       state.rooms.push({
         id: state.rooms.length,
         name: value.name,
@@ -62,7 +66,6 @@ export default new Vuex.Store({
         peers: value.peers,
         typing: null,
       });
-      state.friendRooms[value.friend] = state.rooms.length;
     },
     UPDATE_ROOM(state, value) {
       const newRooms = [...state.rooms];
@@ -186,6 +189,9 @@ export default new Vuex.Store({
       };
       context.commit('SAVE_MSG', data);
       db.updateRoom(context.state.rooms[data.room]);
+      if (data.room !== context.state.selectedRoom) {
+        context.dispatch('showNotification', data.author + ': ' + data.msg);
+      }
     },
     selectTab(context, value) {
       context.commit('SELECT_TAB', value);
@@ -194,6 +200,19 @@ export default new Vuex.Store({
       if (context.state.rooms.length) {
         context.commit('SELECT_ROOM', value);
       }
+    },
+    showNotification(context, value) {
+      Vue.notification.show(
+        'Zerho Chat',
+        {
+          body: value,
+        },
+        {
+          onclick: function() {
+            console.log('Custom click event was called');
+          },
+        },
+      );
     },
     getData(context) {
       db.getData().then((res) => {

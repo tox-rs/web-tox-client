@@ -33,10 +33,13 @@ export default Vue.extend({
         delete info.response;
         const arr = [];
         const selectedRoom = this.$store.state.selectedRoom;
-        const numberFriend = this.$store.state.rooms[selectedRoom].friend;
-        arr.push(info);
-        arr.push(this.$store.state.info.friends[numberFriend]);
-        return arr;
+        const room = this.$store.state.rooms[selectedRoom];
+        if (room) {
+          const numberFriend = this.$store.state.rooms[selectedRoom].friend;
+          arr.push(info);
+          arr.push(this.$store.state.info.friends[numberFriend]);
+          return arr;
+        }
       }
     },
   },
