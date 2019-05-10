@@ -6,7 +6,7 @@ export class Tox {
   public requestQueue: Array<[(value: ToxResponse) => void, (reason: any) => void]>;
 
   constructor() {
-    const apiUrl = window.location.origin == 'http://localhost:8081' ? 'ws://127.0.0.1:2794' : 'ws://54.146.54.115:2794/ws';
+    const apiUrl = window.location.origin == 'http://localhost:8081' ? 'ws://127.0.0.1:2794' : 'wss://zerho.chat/ws';
 
     const socket = new WebSocket(apiUrl);
     socket.addEventListener('message', (ev) => this.onWsMessage(ev));
