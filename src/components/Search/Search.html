@@ -1,5 +1,20 @@
 
-<section class="search">
-  <h1>search Component</h1>
+<section v-if="open" class="search">
+  <md-autocomplete class="search" v-model="selectedEmployee" :md-options="msgs" @md-selected="select" md-layout="box" :md-open-on-focus="false">
+    <!-- <md-button class="md-icon-button md-dense" ><md-icon class="md-primary">search</md-icon></md-button> -->
+    <label>Search...</label>
+    <template slot="md-autocomplete-item" slot-scope="{ item, term }">
+      <span class="date_search">{{
+          new Date(item.date).toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        }}</span>
+        <span class="author_search">
+          {{item.author}}
+        </span>
+      <md-highlight-text :md-term="term">{{ item.value }}</md-highlight-text>
+    </template>
+  </md-autocomplete>
 </section>
 

@@ -8,7 +8,7 @@
       <md-button class="md-icon-button"><md-icon class="md-primary">settings</md-icon></md-button>
       <md-button class="md-icon-button"><md-icon class="md-primary">share</md-icon></md-button>
       <md-button class="md-icon-button"><md-icon class="md-primary">apps</md-icon></md-button>
-      <md-button class="md-icon-button"><md-icon class="md-primary">search</md-icon></md-button>
+      <md-button @click="openSearch" class="md-icon-button"><md-icon class="md-primary">search</md-icon></md-button>
       <div class="divider"></div>
       <md-tabs @md-changed="tabSelect">
         <md-tab id="tab-person" md-icon="person"></md-tab>

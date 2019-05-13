@@ -42,6 +42,7 @@ export default new Vuex.Store({
     dialogActive: false,
     dialogType: 'prompt',
     selectedContact: null,
+    searchActive: false,
   },
   mutations: {
     INIT_STATE(state, value) {
@@ -107,6 +108,9 @@ export default new Vuex.Store({
     DIALOG_TRIGGER(state) {
       state.dialogActive = !state.dialogActive;
     },
+    SEARCH_TRIGGER(state) {
+      state.searchActive = !state.searchActive;
+    }
   },
   actions: {
     initUser(context) {

@@ -30,6 +30,7 @@ export class IndexedDB {
     if (!this.readed) {
       return false;
     }
+    val.typing = null;
     await db.transaction('rw', db.rooms, async () => {
       const room = await db.rooms.where({ friend: val.friend }).first();
       if (room) {

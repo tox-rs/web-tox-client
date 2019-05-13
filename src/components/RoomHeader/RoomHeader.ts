@@ -18,5 +18,8 @@ export default Vue.extend({
     tabSelect(id: any) {
       this.$store.dispatch('selectTab', id);
     },
+    openSearch() {
+      this.$store.commit('SEARCH_TRIGGER');
+    },
   },
 });
