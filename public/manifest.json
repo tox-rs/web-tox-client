@@ -1,6 +1,6 @@
 {
-  "name": "tox-rs",
-  "short_name": "tox-rs",
+  "name": "Zerho Chat",
+  "short_name": "ZC",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

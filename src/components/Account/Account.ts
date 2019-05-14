@@ -7,8 +7,10 @@ export default Vue.extend({
     return {};
   },
   computed: {
-    name(): string {
-      return this.$store.state.info.name;
+    name(): string | undefined {
+      if (this.$store.state.info) {
+        return this.$store.state.info.name;
+      }
     },
   },
   mounted() {},

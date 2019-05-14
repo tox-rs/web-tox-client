@@ -8,33 +8,38 @@ export default Vue.extend({
     return {};
   },
   computed: {
-    rooms(): object[] {
-      return this.$store.state.rooms.filter((room: any, id: number) => {
-        if (room.type === 'group') {
-          room.id = id;
-          return room;
+    conference(): object[] {
+      return this.$store.state.rooms.filter((room: any) => {
+        if (room) {
+          if (room.type === 'conference') {
+            return room;
+          }
         }
       });
     },
-    people(): object[] {
-      return this.$store.state.rooms.filter((room: any, id: number) => {
-        if (room.type === 'people') {
-          room.id = id;
-          return room;
+    friend(): object[] {
+      return this.$store.state.rooms.filter((room: any) => {
+        if (room) {
+          if (room.type === 'friend') {
+            return room;
+          }
         }
       });
     },
     contacts(): object[] | undefined {
-      if (this.$store.state.rooms.length) {
-        const info = {...this.$store.state.info};
+      if (this.$store.state.rooms.length && this.$store.state.info.friends) {
+        const info = { ...this.$store.state.info };
         delete info.friends;
         delete info.response;
         const arr = [];
         const selectedRoom = this.$store.state.selectedRoom;
-        const numberFriend = this.$store.state.rooms[selectedRoom].number;
-        arr.push(info);
-        arr.push(this.$store.state.info.friends[numberFriend]);
-        return arr;
+        const room = this.$store.state.rooms[selectedRoom];
+        if (room) {
+          const numberFriend = this.$store.state.rooms[selectedRoom].friend;
+          arr.push(info);
+          arr.push(this.$store.state.info.friends[numberFriend]);
+          return arr;
+        }
       }
     },
   },
