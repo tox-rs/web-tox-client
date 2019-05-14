@@ -1,7 +1,8 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import Search from '@/components/Search/index.vue';
 export default Vue.extend({
   name: 'tox-area',
-  components: {},
+  components: {Search},
   props: [],
   data() {
     return {
@@ -34,6 +35,7 @@ export default Vue.extend({
   methods: {
     submit(ev: any) {
       if (this.message) {
+        console.log(this);
         this.$store.dispatch('sendMsg', {
           room: this.$store.state.selectedRoom,
           msg: this.message,
