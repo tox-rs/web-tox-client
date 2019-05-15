@@ -1,16 +1,30 @@
 
 <section class="list" :class="type">
-  <md-list v-if="type !== 'contact' && type !== 'group'">
+  <md-list v-if="type === 'files'">
     <Item :type="type"/>
   </md-list>
+  <md-list v-if="type === 'notifications'">
+    <Item v-for="item in notifications" :notification="item" :type="type"/>
+  </md-list>
   <md-list v-if="type === 'group'">
+      <md-button v-if="!addMember && isConference" @click.stop="switchAddMember" class="md-raised md-primary">Add members</md-button>
+      <div class="btn-group">
+          <md-button v-if="addMember && isConference" @click.stop="add('member')" class="md-raised md-primary">Invite</md-button>
+          <md-button v-if="addMember && isConference" @click.stop="switchAddMember" class="md-raised md-accent">Close</md-button>
+      </div>
+      <md-field v-if="addMember && isConference">
+          <label>Friends</label>
+          <md-select v-model="selectedFriends" multiple md-dense>
+            <md-option v-for="item in friend" :value="item.friend">{{item.name}}</md-option>
+          </md-select>
+      </md-field>
         <Item v-for="item in contacts" :contact="item" :type="type"/>
   </md-list>
   <md-list v-if="type === 'contact'">
       <md-list-item md-expand md-expanded>
         <span class="md-list-item-text"><span>People</span>
-        <md-button @click.stop="add" class="md-icon-button md-list-action" :md-ripple="false">
-            <md-icon class="md-primary">add_circle</md-icon>
+        <md-button @click.stop="add('friend')" class="md-icon-button md-list-action" :md-ripple="false">
+            <md-icon>add_circle</md-icon>
         </md-button>
         </span>
         <md-list slot="md-expand">
@@ -19,8 +33,8 @@
       </md-list-item>
       <md-list-item md-expand md-expanded>
           <span class="md-list-item-text"><span>Rooms</span>
-          <md-button @click.stop="add" class="md-icon-button md-list-action" :md-ripple="false">
-                <md-icon class="md-primary">add_circle</md-icon>
+          <md-button @click.stop="add('conference')" class="md-icon-button md-list-action" :md-ripple="false">
+                <md-icon>add_circle</md-icon>
           </md-button>
           </span>
           <md-list slot="md-expand">

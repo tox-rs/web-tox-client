@@ -2,7 +2,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import Search from '@/components/Search/index.vue';
 export default Vue.extend({
   name: 'tox-area',
-  components: {Search},
+  components: { Search },
   props: [],
   data() {
     return {
@@ -21,9 +21,7 @@ export default Vue.extend({
       }
       if (
         this.$store.state.rooms[this.$store.state.selectedRoom].typing !==
-          null &&
-        this.$store.state.rooms[this.$store.state.selectedRoom].typing !==
-          undefined
+        'empty'
       ) {
         return this.$store.state.info.friends[
           this.$store.state.rooms[this.$store.state.selectedRoom].typing

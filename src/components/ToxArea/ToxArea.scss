@@ -48,7 +48,7 @@
           max-width: 800px;
           &.typing{
             font-weight: light;
-            color:var(--md-theme-default-default);
+            color:var(--md-theme-default-icon);
           }
         }
         & > span {
@@ -100,7 +100,7 @@
       height:3px;
       border-radius:50%;
       margin-right:3px;
-      background:var(--md-theme-default-default);
+      background:var(--md-theme-default-icon);
       animation: wave 1.3s linear infinite;
   
       &:nth-child(2) {

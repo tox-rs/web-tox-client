@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { Responses } from 'ws-tox-protocol';
+import { Responses, ToxResponse, ToxRequest } from 'ws-tox-protocol';
 import { Client } from '@/toxProtocol/client';
 import { IndexedDB } from '@/db/index';
+import { __values } from 'tslib';
 
 Vue.use(Vuex);
 const client = new Client();
@@ -11,9 +12,10 @@ interface Room {
   id: number;
   name: string;
   type: string;
+  conference?: number;
   typing?: number | null;
   friend?: number;
-  peers?: number[];
+  peers?: object[];
   msgs: Msg[];
 }
 
@@ -24,18 +26,26 @@ interface Msg {
   status: string;
   message_id?: number;
 }
-
+interface Notification {
+  id: number;
+  value: string;
+  num: number;
+  type: string;
+  readed: boolean;
+}
 const info = {} as Responses.Info;
 const rooms: Room[] = [];
 const nums: number[] = [];
 const objs: object[] = [];
+const notifications: Notification[] = [];
 
 export default new Vuex.Store({
   state: {
     rooms,
     friendRooms: [...nums],
     conferenceRooms: [...nums],
-    numMsg: objs,
+    numMsg: [...objs],
+    notifications,
     info,
     selectedTab: 'tab-person',
     selectedRoom: 1,
@@ -43,12 +53,14 @@ export default new Vuex.Store({
     dialogType: 'prompt',
     selectedContact: null,
     searchActive: false,
+    addMemberActive: false,
   },
   mutations: {
     INIT_STATE(state, value) {
       state.rooms = value.rooms;
       state.friendRooms = value.friendRooms;
       state.info = value.info;
+      state.conferenceRooms = value.conferenceRooms;
     },
     INIT_USER(state, value) {
       state.info = value;
@@ -57,7 +69,12 @@ export default new Vuex.Store({
       if (state.rooms.length === 0) {
         state.rooms.push({} as Room);
       }
-      state.friendRooms[value.friend] = state.rooms.length;
+      if (value.type === 'friend') {
+        state.friendRooms[value.friend] = state.rooms.length;
+      }
+      if (value.type === 'conference') {
+        state.conferenceRooms[value.conference] = state.rooms.length;
+      }
       state.rooms.push({
         id: state.rooms.length,
         name: value.name,
@@ -65,18 +82,43 @@ export default new Vuex.Store({
         type: value.type,
         friend: value.friend,
         peers: value.peers,
+        conference: value.conference,
         typing: null,
       });
     },
     UPDATE_ROOM(state, value) {
       const newRooms = [...state.rooms];
-      if (value.typing !== undefined) {
-        newRooms[state.friendRooms[value.friend]].typing = value.typing;
-      } else if (value.msgs.length > 0) {
-        newRooms[state.friendRooms[value.friend]].msgs = value.msgs;
-      } else {
-        newRooms[state.friendRooms[value.friend]].name = value.name;
+      const index =
+        value.friend !== undefined
+          ? state.friendRooms[value.friend]
+          : state.conferenceRooms[value.conference];
+      const room = newRooms[index] as any;
+      Object.keys(value).forEach((key) => {
+        if (value[key] !== undefined && key !== 'msgs') {
+          room[key] = value[key];
+        }
+        if (key === 'msgs' && value.msgs) {
+          if (value.msgs.length > 0) {
+            room[key] = value[key];
+          }
+        }
+      });
+      newRooms[index] = room;
+      state.rooms = newRooms;
+    },
+    ADD_MEMBER(state, value) {
+      const newRooms = [...state.rooms];
+      const index = state.conferenceRooms[value.conference];
+      const room = newRooms[index];
+      if (room.peers) {
+        room.peers[value.peer] = {
+          name: value.name,
+          isOwn: false,
+          num: value.peer,
+        };
       }
+      newRooms[index] = room;
+      console.log(newRooms[index]);
       state.rooms = newRooms;
     },
     SAVE_MSG(state, value) {
@@ -92,6 +134,29 @@ export default new Vuex.Store({
         date: new Date(Date.now()),
         status: value.status || 'sended',
       });
+    },
+    ADD_NOTIFICATION(state, value) {
+      state.notifications.push({
+        id: state.notifications.length,
+        value: value.value,
+        num: value.num,
+        type: value.type,
+        readed: false,
+      });
+    },
+    READ_NOTIFICATION(state, value) {
+      const newNotifications = [...state.notifications];
+      newNotifications.forEach((notification) => {
+        if (value === notification.id) {
+          notification.readed = true;
+        }
+      });
+      state.notifications = newNotifications;
+    },
+    DELETE_NOTIFICATION(state, value) {
+      const newNotifications = [...state.notifications];
+      newNotifications.splice(value, 1);
+      state.notifications = newNotifications;
     },
     CHANGE_STATUS_MSG(state, value) {
       state.rooms[value.room].msgs[value.msg].status = value.status;
@@ -110,7 +175,10 @@ export default new Vuex.Store({
     },
     SEARCH_TRIGGER(state) {
       state.searchActive = !state.searchActive;
-    }
+    },
+    ADD_MEMBER_TRIGGER(state) {
+      state.addMemberActive = !state.addMemberActive;
+    },
   },
   actions: {
     initUser(context) {
@@ -126,6 +194,11 @@ export default new Vuex.Store({
           });
         });
       });
+
+      // const request = {
+      //   request: 'GetChatList',
+      // } as ToxRequest;
+      // client.tox.sendRequest(request).then((res) => console.log(res));
     },
     addFriend(context, value) {
       const response = client.tox.addFriend(value, 'Hello');
@@ -133,8 +206,75 @@ export default new Vuex.Store({
         response.then((res) => console.log(res));
       }
     },
+    addMember(context, value) {
+      if (typeof value === 'number') {
+        const request = {
+          request: 'InviteToConference',
+          friend: value,
+          conference:
+            context.state.rooms[context.state.selectedRoom].conference,
+        } as ToxRequest;
+        client.tox.sendRequest(request).then((res) => console.log(res));
+      } else {
+        context.commit('ADD_MEMBER', value);
+      }
+    },
+    addConference(context) {
+      let request = {
+        request: 'NewConference',
+      } as ToxRequest;
+      client.tox.sendRequest(request).then((resConference: ToxResponse) => {
+        resConference = resConference as Responses.Conference;
+        const room = {
+          id: context.state.rooms.length,
+          name: 'Group ' + resConference.conference,
+          msgs: [],
+          type: 'conference',
+          conference: resConference.conference,
+        } as Room;
+        request = {
+          request: 'SetConferenceTitle',
+          conference: resConference.conference,
+          title: room.name,
+        };
+        client.tox
+          .sendRequest(request)
+          .then((resConferenceTitle: ToxResponse) => {
+            if (resConferenceTitle.response === 'Ok') {
+              room.peers = [
+                { name: context.state.info.name, isOwn: true, num: 0 },
+              ];
+              context.dispatch('addRoom', room);
+            }
+          });
+      });
+    },
+    joinConference(context, value) {
+      const request = {
+        request: 'JoinConference',
+        friend: value.num,
+        cookie: value.value,
+      } as ToxRequest;
+      client.tox.sendRequest(request).then((res: ToxResponse) => {
+        res = res as Responses.Conference;
+        const room = {
+          id: context.state.rooms.length,
+          name: 'Group ' + res.conference,
+          msgs: [],
+          type: 'conference',
+          conference: res.conference,
+          peers: [],
+        } as Room;
+        context.dispatch('addRoom', room);
+      });
+    },
     addRoom(context, value) {
-      if (context.state.friendRooms[value.friend] === undefined) {
+      if (
+        (context.state.friendRooms[value.friend] === undefined &&
+          value.type === 'friend') ||
+        (context.state.conferenceRooms[value.conference] === undefined &&
+          value.type === 'conference')
+      ) {
         db.addRoom(value as Room).then((res) => {
           if (res) {
             context.commit('ADD_ROOM', value);
@@ -169,8 +309,15 @@ export default new Vuex.Store({
           kind: 'Normal',
           message: value.msg,
         };
+      } else if (room.conference !== undefined) {
+        request = {
+          request: 'SendConferenceMessage',
+          conference: room.conference,
+          kind: 'Normal',
+          message: value.msg,
+        };
       }
-      client.tox.sendRequest(request).then((res: any) => {
+      client.tox.sendRequest(request).then((res: ToxResponse) => {
         if (res.response === 'MessageSent') {
           value.message_id = res.message_id;
           context.commit('SAVE_MSG', value);
@@ -185,24 +332,46 @@ export default new Vuex.Store({
       db.updateRoom(context.state.rooms[data.room]);
     },
     saveMsg(context, value) {
+      const index =
+        value.friend !== undefined
+          ? context.state.friendRooms[value.friend]
+          : context.state.conferenceRooms[value.conference];
+      const room = context.state.rooms[index];
       const data = {
-        room: context.state.friendRooms[value.friend],
+        room: index,
         msg: value.message,
-        author: context.state.info.friends[value.friend].name,
+        author: '',
         status: 'readed',
       };
+      if (value.friend !== undefined) {
+        data.author = context.state.info.friends[value.friend].name;
+      } else {
+        if (room.peers) {
+          data.author = room.peers[value.peer].name;
+        }
+      }
+
       context.commit('SAVE_MSG', data);
       db.updateRoom(context.state.rooms[data.room]);
       if (data.room !== context.state.selectedRoom) {
         context.dispatch('showNotification', data.author + ': ' + data.msg);
       }
     },
+    addNotification(context, value) {
+      context.commit('ADD_NOTIFICATION', value);
+    },
     selectTab(context, value) {
       context.commit('SELECT_TAB', value);
+      if (context.state.addMemberActive) {
+        context.commit('ADD_MEMBER_TRIGGER');
+      }
     },
     selectRoom(context, value) {
       if (context.state.rooms.length) {
         context.commit('SELECT_ROOM', value);
+      }
+      if (context.state.addMemberActive) {
+        context.commit('ADD_MEMBER_TRIGGER');
       }
     },
     showNotification(context, value) {

@@ -23,29 +23,29 @@
         }}</span>
         <div class="msg">{{ item.value }}</div>
       </div>
-      <template v-if="typingContact && content.length-1 === index" >
-          <div class="avatar">
-            <md-avatar class="md-avatar-icon">{{
-              typingContact.name[0].toUpperCase()
-            }}</md-avatar>
-            <div class="name">{{ typingContact.name }}</div>
-          </div>
-          <div class="content">
-              <span>{{
-                  new Date().toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })
-                }}</span>
-            <div class="msg typing">typing</div>
-            <div class="wave">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-            </div>
-          </div>
-        </template>
     </md-content>
+    <md-content v-if="typingContact" class="tox-area__content__item">
+        <div class="avatar">
+          <md-avatar class="md-avatar-icon">{{
+            typingContact.name[0].toUpperCase()
+          }}</md-avatar>
+          <div class="name">{{ typingContact.name }}</div>
+        </div>
+        <div class="content">
+            <span>{{
+                new Date().toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })
+              }}</span>
+          <div class="msg typing">typing</div>
+          <div class="wave">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+          </div>
+        </div>
+      </md-content>
   </md-content>
   <div class="tox-area__input">
     <md-field>

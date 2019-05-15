@@ -5,7 +5,7 @@ export default Vue.extend({
   components: { Item },
   props: ['type'],
   data() {
-    return {};
+    return { selectedFriends: [] };
   },
   computed: {
     conference(): object[] {
@@ -27,26 +27,65 @@ export default Vue.extend({
       });
     },
     contacts(): object[] | undefined {
-      if (this.$store.state.rooms.length && this.$store.state.info.friends) {
-        const info = { ...this.$store.state.info };
-        delete info.friends;
-        delete info.response;
-        const arr = [];
+      if (this.$store.state.rooms.length) {
         const selectedRoom = this.$store.state.selectedRoom;
         const room = this.$store.state.rooms[selectedRoom];
         if (room) {
-          const numberFriend = this.$store.state.rooms[selectedRoom].friend;
-          arr.push(info);
-          arr.push(this.$store.state.info.friends[numberFriend]);
-          return arr;
+          if (this.$store.state.info.friends && room.type === 'friend') {
+            const info = { ...this.$store.state.info };
+            delete info.friends;
+            delete info.response;
+            const arr = [];
+            if (room.type === 'friend') {
+              const numberFriend = room.friend;
+              arr.push(info);
+              arr.push(this.$store.state.info.friends[numberFriend]);
+              return arr;
+            }
+          }
+          if (room.type === 'conference') {
+            return room.peers;
+          }
         }
       }
     },
+    notifications():object[] {
+      return this.$store.state.notifications;
+    },
+    addMember(): boolean {
+      return this.$store.state.addMemberActive;
+    },
+    isConference(): boolean {
+      if (this.$store.state.rooms.length) {
+        return this.$store.state.rooms[this.$store.state.selectedRoom].type ===
+          'conference'
+          ? true
+          : false;
+      } else {
+        return false;
+      }
+    },
   },
-  mounted() {},
+  beforeUpdate() {
+    if (!this.addMember) {
+      this.selectedFriends = [];
+    }
+  },
   methods: {
-    add() {
-      this.$store.commit('DIALOG_TRIGGER');
+    add(type: string) {
+      if (type === 'friend') {
+        this.$store.commit('DIALOG_TRIGGER');
+      } else if (type === 'member') {
+        this.selectedFriends.forEach((val) => {
+          this.$store.dispatch('addMember', val);
+        });
+        this.$store.commit('ADD_MEMBER_TRIGGER');
+      } else {
+        this.$store.dispatch('addConference');
+      }
+    },
+    switchAddMember() {
+      this.$store.commit('ADD_MEMBER_TRIGGER');
     },
   },
 });

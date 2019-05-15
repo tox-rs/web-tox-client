@@ -11,12 +11,12 @@
 @include md-register-theme(
   'default',
   (
-    default: #acb8d0,
+    default: #f2f5f8,
+    icon-on-background: #acb8d0,
+    icon: #acb8d0,
     primary: #03b381,
-    // The primary color of your brand
-      accent: #f2f5f8,
-    // The secondary color of your brand
-      border-primary: #dee1f3,
+    accent: #f44b56,
+    border-primary: #dee1f3,
     border-accent: #e5e5e5,
   )
 );
@@ -47,9 +47,6 @@ div.handle.handle-mr {
 .md-button-clean {
   font-family: 'Nunito', 'Roboto', 'Noto Sans', '-apple-system',
     'BlinkMacSystemFont', sans-serif !important;
-}
-.md-icon {
-  color: var(--md-theme-default-default) !important;
 }
 .md-raised {
   color: white !important;
@@ -128,7 +125,7 @@ div.handle.handle-mr {
   white-space: nowrap;
   color: #acacac;
   font-size: 12px;
-  padding-right: 10px;
+  margin-right: 10px;
   width: 52px;
 }
 .author_search {
@@ -138,6 +135,19 @@ div.handle.handle-mr {
   font-size: 12px;
   width: 52px;
   margin-right: 10px;
+}
+
+// .md-menu-content{
+//   max-width: 260px!important;
+// }
+.md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon{
+  color: var(--md-theme-default-icon-on-background);
+}
+.md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon{
+  color: var(--md-theme-default-icon-on-background);
+}
+.md-menu .md-icon.md-theme-default.md-icon-font.md-primary{
+  color: var(--md-theme-default-icon-on-background);
 }
 #prompt {
   width: 100%;

@@ -18,6 +18,7 @@ interface Msg {
 export class AppDatabase extends Dexie {
   public rooms: Dexie.Table<Room, number>;
   public friendRooms: Dexie.Table<{ friend: number; room: number }, number>;
+  public conferenceRooms: Dexie.Table<{ conference: number; room: number }, number>;
   public info: Dexie.Table<Responses.Info, number>;
   constructor() {
     super('WebTox');
@@ -25,8 +26,9 @@ export class AppDatabase extends Dexie {
     const DB = this;
 
     DB.version(1).stores({
-      rooms: '++id, name, type, friend, peers, msgs',
+      rooms: '++id, name, type, friend, conference, msgs',
       friendRooms: 'friend, room',
+      conferenceRooms: 'conference, room',
       info: 'id',
     });
   }

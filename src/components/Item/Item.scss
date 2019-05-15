@@ -1,9 +1,9 @@
 .item {
-  .md-list-item-content .md-list-action:last-of-type{
+  .md-list-item-content .md-list-action:last-of-type {
     margin: 0 -10px 0 0;
   }
-  .md-field{
-    margin:0px;
+  .md-field {
+    margin: 0px;
     margin-top: -16px;
   }
   .md-list-item.conference,
@@ -54,6 +54,18 @@
     }
   }
   .md-list-item.group {
+    .md-button:not([disabled]).md-focused:before,
+    .md-button:not([disabled]):active:before,
+    .md-button:not([disabled]):hover:before {
+      background: transparent;
+    }
+    &_detail {
+      .md-button:not([disabled]).md-focused:before,
+      .md-button:not([disabled]):active:before,
+      .md-button:not([disabled]):hover:before {
+        background: transparent;
+      }
+    }
     padding: 10px;
     height: 64px;
     .md-list-item-container {
@@ -102,9 +114,12 @@
     }
   }
   .md-list-item.notifications {
+    position: relative;
+    margin: 10px 0px;
     .md-list-item-container {
       .md-list-item-text {
         text-decoration: none;
+        width: 100%;
         .title {
           color: #2e2f32;
           font-size: 14px;
@@ -124,10 +139,16 @@
             margin-right: 10px;
           }
         }
+        .btn-group{
+          display: flex;
+          position: absolute;
+          width: 80px;
+          right: 10px;
+          top: 9px;
+        }
         .message {
           padding-left: 32px;
           font-size: 14px;
-          color: black;
           > span {
             font-size: 16px;
             border-radius: 25px;
@@ -147,10 +168,5 @@
         }
       }
     }
-  }
-  .md-button:not([disabled]).md-focused:before,
-  .md-button:not([disabled]):active:before,
-  .md-button:not([disabled]):hover:before {
-    background: transparent;
   }
 }

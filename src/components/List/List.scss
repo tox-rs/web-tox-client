@@ -32,6 +32,28 @@
       width: 40px;
     }
   }
+  .btn-group{
+    display: flex;
+    button{
+      width: 50%;
+      margin: 6px 0px;
+      box-shadow: 0 3px 1px 0px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+      &:first-child{
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        margin-left: 6px;
+      }
+      &:last-child{
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        margin-right: 6px;
+      }
+    }
+  }
+  .md-field{
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
   .md-button:not([disabled]).md-focused:before,
   .md-button:not([disabled]):active:before,
   .md-button:not([disabled]):hover:before {

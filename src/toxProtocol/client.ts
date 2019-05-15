@@ -103,6 +103,23 @@ export class Client {
         event = event as Events.FriendReadReceipt;
         store.dispatch('changeStatusMsg', event.message_id);
         break;
+      case 'ConferencePeerName':
+        event = event as Events.ConferencePeerName;
+        store.dispatch('addMember', event);
+        break;
+      case 'ConferenceMessage':
+        event = event as Events.ConferenceMessage;
+        printMessage(event);
+        break;
+      case 'ConferenceInvite':
+        event = event as Events.ConferenceInvite;
+        const data = {
+          type: 'invite',
+          value: event.cookie,
+          num: event.friend,
+        };
+        store.dispatch('addNotification', data);
+        break;
       default:
         break;
     }

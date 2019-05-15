@@ -28,7 +28,7 @@ export default Vue.extend({
   },
   mounted() {},
   methods: {
-    select: function(ev: any) {
+    select(ev: any) {
       this.$parent.$children.forEach((child) => {
         if (child.$el.classList.contains('tox-area__content')) {
           const toxAreaContent = child;

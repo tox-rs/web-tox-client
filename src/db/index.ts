@@ -19,20 +19,41 @@ export class IndexedDB {
   }
 
   public async addRoom(val: any) {
-    await db.transaction('rw', db.rooms, db.friendRooms, async () => {
-      const roomId = await db.rooms.add(val);
-      await db.friendRooms.add({ friend: val.friend, room: roomId });
-    });
+    await db.transaction(
+      'rw',
+      db.rooms,
+      db.friendRooms,
+      db.conferenceRooms,
+      async () => {
+        const roomId = await db.rooms.add(val);
+        if (val.type === 'friend') {
+          await db.friendRooms.add({ friend: val.friend, room: roomId });
+        }
+        if (val.type === 'conference') {
+          await db.conferenceRooms.add({
+            conference: val.conference,
+            room: roomId,
+          });
+        }
+      },
+    );
     return true;
   }
 
-  public async updateRoom(val: any) {
+  public async updateRoom(value: any) {
     if (!this.readed) {
       return false;
     }
+    const val = {...value};
     val.typing = null;
     await db.transaction('rw', db.rooms, async () => {
-      const room = await db.rooms.where({ friend: val.friend }).first();
+      let room;
+      if (val.type === 'friend') {
+        room = await db.rooms.where({ friend: val.friend }).first();
+      } else {
+        room = await db.rooms.where({ conference: val.conference }).first();
+      }
+
       if (room) {
         if (
           val.msgs.length > 0 ||
@@ -48,11 +69,16 @@ export class IndexedDB {
   public async getData() {
     const rooms = await db.rooms.toCollection().toArray();
     const friendRooms = await db.friendRooms.toCollection().toArray();
+    const conferenceRooms = await db.conferenceRooms.toCollection().toArray();
     const infoUser = await db.info.toCollection().first();
     const friendRoomsArr: any = [];
+    const conferenceRoomsArr: any = [];
     const roomsArr: any = [];
     friendRooms.forEach((friendRoom) => {
       friendRoomsArr[friendRoom.friend] = friendRoom.room;
+    });
+    conferenceRooms.forEach((conferenceRoom) => {
+      conferenceRoomsArr[conferenceRoom.conference] = conferenceRoom.room;
     });
     rooms.forEach((room) => {
       roomsArr[room.id] = room;
@@ -62,6 +88,7 @@ export class IndexedDB {
       rooms: roomsArr,
       friendRooms: friendRoomsArr,
       info: infoUser,
+      conferenceRooms: conferenceRoomsArr,
     };
   }
 }

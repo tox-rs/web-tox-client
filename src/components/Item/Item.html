@@ -1,12 +1,14 @@
 <section class="item" @click="click">
-  <template v-if="type === 'friend' && type !== 'conference'">
+  <template v-if="type === 'friend' || type === 'conference' && !contact">
     <md-list-item :class="type">
-      <md-avatar class="md-avatar-icon" :class="status.toLowerCase()">{{
-        room.name[0].toUpperCase()
-      }}</md-avatar>
+      <md-avatar
+        class="md-avatar-icon"
+        :class="type !== 'conference' ? status.toLowerCase() : ''"
+        >{{ room.name[0].toUpperCase() }}</md-avatar
+      >
       <span class="md-list-item-text">{{ room.name }}</span>
       <md-button class="md-icon-button md-list-action">
-        <md-icon class="md-primary">more_vert</md-icon>
+        <md-icon>more_vert</md-icon>
       </md-button>
     </md-list-item>
   </template>
@@ -18,7 +20,7 @@
       }}</md-avatar>
       <span class="md-list-item-text">{{ contact.name }}</span>
       <md-button class="md-icon-button md-list-action">
-        <md-icon class="md-primary">keyboard_arrow_right</md-icon>
+        <md-icon>keyboard_arrow_right</md-icon>
       </md-button>
     </md-list-item>
   </template>
@@ -31,7 +33,7 @@
         @click.stop="click('stop')"
         class="md-icon-button md-list-action"
       >
-        <md-icon class="md-primary">keyboard_arrow_left</md-icon>
+        <md-icon>keyboard_arrow_left</md-icon>
       </md-button>
       <md-list class="detail">
         <md-subheader>Tox ID</md-subheader>
@@ -67,12 +69,20 @@
   <template v-if="type === 'notifications'">
     <md-list-item :class="type">
       <a class="md-list-item-text">
-        <span class="title">Empty Room</span>
+        <span class="title" v-if="notification.type === 'invite'"
+          >Invite Group</span
+        >
         <span class="sender">
-          <md-avatar class="md-avatar-icon">A</md-avatar>
-          <span>Abbey Christansen</span>
+          <md-avatar class="md-avatar-icon">{{
+            senderName[0].toUpperCase()
+          }}</md-avatar>
+          <span>{{ senderName }}</span>
         </span>
-        <span class="message">
+        <div class="btn-group" v-if="notification.type === 'invite'">
+          <md-button @click.stop="acceptNotification" class="md-icon-button md-primary"><md-icon class="md-primary">check</md-icon></md-button>
+          <md-button @click.stop="deleteNotification" class="md-icon-button md-accent"><md-icon class="md-accent">close</md-icon></md-button>
+        </div>
+        <span v-if="notification.type === 'ref'" class="message">
           <span>
             <md-avatar class="md-avatar-icon">D</md-avatar>
             <span>dluchko</span>
