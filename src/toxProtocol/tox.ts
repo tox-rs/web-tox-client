@@ -14,7 +14,9 @@ export class Tox {
   >;
 
   constructor() {
-    const socket = new WebSocket('ws://127.0.0.1:2794');
+    const apiUrl = window.location.origin == 'http://localhost:8081' ? 'ws://127.0.0.1:2794' : 'wss://zerho.chat/ws';
+
+    const socket = new WebSocket(apiUrl);
     socket.addEventListener('message', (ev) => this.onWsMessage(ev));
 
     const target = new EventTarget();
