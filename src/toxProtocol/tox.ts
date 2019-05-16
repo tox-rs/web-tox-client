@@ -92,10 +92,9 @@ export class Tox {
     });
   }
 
-  public sendRequest(req: object): Promise<ToxResponse> {
+  public sendRequest(req: ToxRequest): Promise<ToxResponse> {
     return new Promise((accept, reject) => {
-      const request = req as ToxRequest;
-      this.socket.send(JSON.stringify(request));
+      this.socket.send(JSON.stringify(req));
       this.requestQueue.push([accept, reject]);
     });
   }

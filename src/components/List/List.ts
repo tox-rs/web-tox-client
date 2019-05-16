@@ -77,11 +77,11 @@ export default Vue.extend({
         this.$store.commit('DIALOG_TRIGGER');
       } else if (type === 'member') {
         this.selectedFriends.forEach((val) => {
-          this.$store.dispatch('addMember', val);
+          this.$store.dispatch('requests/conference/InviteToConference', val);
         });
         this.$store.commit('ADD_MEMBER_TRIGGER');
       } else {
-        this.$store.dispatch('addConference');
+        this.$store.dispatch('requests/conference/NewConference');
       }
     },
     switchAddMember() {

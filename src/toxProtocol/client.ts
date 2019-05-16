@@ -87,38 +87,68 @@ export class Client {
         });
     }
   }
-
+  public sendToxRequset(req: ToxRequest) {
+    this.tox.sendRequest(req).then((res: ToxResponse) => {
+      this.onToxResponse(res, req);
+    });
+  }
+  public onToxResponse(res: ToxResponse, req: ToxRequest) {
+    console.log(res);
+    switch (res.response) {
+      case 'Friend':
+      case 'FriendExists':
+      case 'LastOnline':
+        store.dispatch('responses/friend/' + res.response, {res, req});
+        break;
+      case 'Conference':
+      case 'ConferencePeerCount':
+      case 'ConferencePeerPublicKey':
+      case 'IsOwnPeerNumber':
+      case 'ConferenceTitle':
+      case 'ChatList':
+      case 'ConferenceType':
+        store.dispatch('responses/conference/' + res.response, {res, req});
+        break;
+      case 'Ok':
+      case 'MessageSent':
+      case 'Info':
+      case 'ConnectionStatus':
+      case 'Address':
+      case 'Nospam':
+      case 'PublicKey':
+      case 'Name':
+      case 'StatusMessage':
+      case 'Status':
+        store.dispatch('responses/user/' + res.response, {res, req});
+        break;
+      default:
+        break;
+    }
+  }
   public onToxEvent(event: ToxEvent) {
     console.log(event);
     switch (event.event) {
+      case 'FriendRequest':
       case 'FriendMessage':
-        event = event as Events.FriendMessage;
-        printMessage(event);
-        break;
+      case 'FriendName':
+      case 'FriendStatusMessage':
+      case 'FriendStatus':
+      case 'FriendConnectionStatus':
       case 'FriendTyping':
-        event = event as Events.FriendTyping;
-        store.dispatch('setTyping', event);
-        break;
       case 'FriendReadReceipt':
-        event = event as Events.FriendReadReceipt;
-        store.dispatch('changeStatusMsg', event.message_id);
-        break;
-      case 'ConferencePeerName':
-        event = event as Events.ConferencePeerName;
-        store.dispatch('addMember', event);
-        break;
-      case 'ConferenceMessage':
-        event = event as Events.ConferenceMessage;
-        printMessage(event);
+      case 'FriendMessage':
+        store.dispatch('events/friend/' + event.event, event);
         break;
       case 'ConferenceInvite':
-        event = event as Events.ConferenceInvite;
-        const data = {
-          type: 'invite',
-          value: event.cookie,
-          num: event.friend,
-        };
-        store.dispatch('addNotification', data);
+      case 'ConferenceConnected':
+      case 'ConferenceMessage':
+      case 'ConferenceTitle':
+      case 'ConferencePeerName':
+      case 'ConferencePeerName':
+        store.dispatch('events/conference/' + event.event, event);
+        break;
+      case 'ConnectionStatus':
+        store.dispatch('events/user/' + event.event, event);
         break;
       default:
         break;

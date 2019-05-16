@@ -27,7 +27,9 @@ export default Vue.extend({
     },
     senderName(): string {
       if (this.$store.state.info.friends && this.notification) {
-        return this.$store.state.info.friends[this.notification.num].name;
+        return this.notification.num !== null
+          ? this.$store.state.info.friends[this.notification.num].name
+          : 'NULL';
       } else {
         return 'NULL';
       }
@@ -48,7 +50,19 @@ export default Vue.extend({
       }
     },
     acceptNotification() {
-      this.$store.dispatch('joinConference', this.notification);
+      if (this.notification.type === 'invite') {
+        this.$store.dispatch(
+          'requests/conference/JoinConference',
+          this.notification,
+        );
+      } else {
+        this.$store.dispatch(
+          'requests/friend/AddFriendNorequest',
+          this.notification.value,
+        );
+      }
+
+      this.$store.commit('DELETE_NOTIFICATION', this.notification.id);
     },
     deleteNotification() {
       this.$store.commit('DELETE_NOTIFICATION', this.notification.id);

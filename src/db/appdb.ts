@@ -1,5 +1,18 @@
 import Dexie from 'dexie';
 import { Responses } from 'ws-tox-protocol';
+const info = {} as Responses.Info;
+interface Info {
+  connection: string;
+  nospam: string;
+  address: string;
+  public_key: string;
+  response: 'Info';
+  tox_id: string;
+  name: string;
+  status: string;
+  status_message: string;
+  friends: object[];
+}
 interface Room {
   id: number;
   name: string;
@@ -18,7 +31,7 @@ interface Msg {
 export class AppDatabase extends Dexie {
   public rooms: Dexie.Table<Room, number>;
   public friendRooms: Dexie.Table<{ friend: number; room: number }, number>;
-  public conferenceRooms: Dexie.Table<{ conference: number; room: number }, number>;
+  public conferenceRooms: Dexie.Table<Info, number>;
   public info: Dexie.Table<Responses.Info, number>;
   constructor() {
     super('WebTox');

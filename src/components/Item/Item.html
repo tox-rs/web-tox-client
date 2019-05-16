@@ -72,13 +72,16 @@
         <span class="title" v-if="notification.type === 'invite'"
           >Invite Group</span
         >
+        <span class="title" v-if="notification.type === 'friend'"
+          >Invite Group</span
+        >
         <span class="sender">
           <md-avatar class="md-avatar-icon">{{
             senderName[0].toUpperCase()
           }}</md-avatar>
           <span>{{ senderName }}</span>
         </span>
-        <div class="btn-group" v-if="notification.type === 'invite'">
+        <div class="btn-group" v-if="notification.type === 'invite' || notification.type === 'friend'">
           <md-button @click.stop="acceptNotification" class="md-icon-button md-primary"><md-icon class="md-primary">check</md-icon></md-button>
           <md-button @click.stop="deleteNotification" class="md-icon-button md-accent"><md-icon class="md-accent">close</md-icon></md-button>
         </div>

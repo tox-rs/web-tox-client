@@ -33,12 +33,22 @@ export default Vue.extend({
   methods: {
     submit(ev: any) {
       if (this.message) {
-        console.log(this);
-        this.$store.dispatch('sendMsg', {
-          room: this.$store.state.selectedRoom,
-          msg: this.message,
-          author: this.$store.state.info.name,
-        });
+        if (
+          this.$store.state.rooms[this.$store.state.selectedRoom].type ===
+          'friend'
+        ) {
+          this.$store.dispatch('requests/friend/SendFriendMessage', {
+            friend: this.$store.state.rooms[this.$store.state.selectedRoom]
+              .friend,
+            message: this.message,
+          });
+        } else {
+          this.$store.dispatch('requests/conference/SendConferenceMessage', {
+            conference: this.$store.state.rooms[this.$store.state.selectedRoom]
+              .conference,
+            message: this.message,
+          });
+        }
       }
       this.message = '';
     },

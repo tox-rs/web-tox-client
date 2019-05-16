@@ -27,7 +27,7 @@ export default Vue.extend({
   mounted() {},
   methods: {
     onConfirm(value: any) {
-      this.$store.dispatch('addFriend', value);
+      this.$store.dispatch('requests/friend/AddFriend', { tox_id: value });
     },
   },
 });
