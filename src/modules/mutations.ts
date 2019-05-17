@@ -7,27 +7,6 @@ export const mutations: MutationTree<any> = {
     state.info = value.info;
     state.conferenceRooms = value.conferenceRooms;
   },
-  ADD_ROOM(state, value) {
-    if (state.rooms.length === 0) {
-      state.rooms.push({});
-    }
-    if (value.type === 'friend') {
-      state.friendRooms[value.friend] = state.rooms.length;
-    }
-    if (value.type === 'conference') {
-      state.conferenceRooms[value.conference] = state.rooms.length;
-    }
-    state.rooms.push({
-      id: state.rooms.length,
-      name: value.name,
-      msgs: value.msgs,
-      type: value.type,
-      friend: value.friend,
-      peers: value.peers,
-      conference: value.conference,
-      typing: null,
-    });
-  },
   ADD_FRIEND_ROOM(state, value) {
     if (state.rooms.length === 0) {
       state.rooms.push({});
@@ -42,60 +21,32 @@ export const mutations: MutationTree<any> = {
       typing: null,
     });
   },
+  ADD_CONFERENCE_ROOM(state, value) {
+    if (state.rooms.length === 0) {
+      state.rooms.push({});
+    }
+    state.conferenceRooms[value.conference] = state.rooms.length;
+    state.rooms.push({
+      id: state.rooms.length,
+      name: value.name,
+      msgs: [],
+      type: 'conference',
+      friend: value.conference,
+      typing: null,
+    });
+  },
   UPDATE_FRIEND_ROOM(state, value) {
     const newRooms = [...state.rooms];
     const index = state.friendRooms[value.friend];
     newRooms[index].name = value.name;
     state.rooms = newRooms;
   },
-  UPDATE_ROOM(state, value) {
-    const newRooms = [...state.rooms];
-    const index =
-      value.friend !== undefined
-        ? state.friendRooms[value.friend]
-        : state.conferenceRooms[value.conference];
-    const room = newRooms[index] as any;
-    Object.keys(value).forEach((key) => {
-      if (value[key] !== undefined && key !== 'msgs') {
-        room[key] = value[key];
-      }
-      if (key === 'msgs' && value.msgs) {
-        if (value.msgs.length > 0) {
-          room[key] = value[key];
-        }
-      }
-    });
-    newRooms[index] = room;
-    state.rooms = newRooms;
-  },
-  ADD_MEMBER(state, value) {
+  UPDATE_CONFERENCE_ROOM(state, value) {
     const newRooms = [...state.rooms];
     const index = state.conferenceRooms[value.conference];
-    const room = newRooms[index];
-    if (room.peers) {
-      room.peers[value.peer] = {
-        name: value.name,
-        isOwn: false,
-        num: value.peer,
-      };
-    }
-    newRooms[index] = room;
-    console.log(newRooms[index]);
+    newRooms[index].name = value.name;
+    newRooms[index].peers = value.peers;
     state.rooms = newRooms;
-  },
-  SAVE_MSG(state, value) {
-    if (value.message_id) {
-      state.numMsg[value.message_id] = {
-        room: value.room,
-        msg: state.rooms[value.room].msgs.length,
-      };
-    }
-    state.rooms[value.room].msgs.push({
-      value: value.msg,
-      author: value.author,
-      date: new Date(Date.now()),
-      status: value.status || 'sended',
-    });
   },
   ADD_NOTIFICATION(state, value) {
     state.notifications.push({
@@ -120,9 +71,6 @@ export const mutations: MutationTree<any> = {
     newNotifications.splice(value, 1);
     state.notifications = newNotifications;
   },
-  CHANGE_STATUS_MSG(state, value) {
-    state.rooms[value.room].msgs[value.msg].status = value.status;
-  },
   SELECT_ROOM(state, value) {
     state.selectedRoom = value;
   },
@@ -132,8 +80,9 @@ export const mutations: MutationTree<any> = {
   SELECT_CONTACT(state, value) {
     state.selectedContact = value;
   },
-  DIALOG_TRIGGER(state) {
+  DIALOG_TRIGGER(state, value) {
     state.dialogActive = !state.dialogActive;
+    state.dialogType = value;
   },
   SEARCH_TRIGGER(state) {
     state.searchActive = !state.searchActive;
@@ -238,11 +187,9 @@ export const mutations: MutationTree<any> = {
     if (peer) {
       peer.name = value.name;
     } else {
-      peer = { name: value.name, isOwn: false, num: value.peer };
+      peer = { name: value.name, isOwn: false, number: value.peer };
     }
-    rooms[state.conferenceRooms[value.conference]].peers[
-      value.peer
-    ] = peer;
+    rooms[state.conferenceRooms[value.conference]].peers[value.peer] = peer;
     state.rooms = rooms;
   },
   eventConferencePeerListChanged(state, value) {
@@ -352,8 +299,14 @@ export const mutations: MutationTree<any> = {
       name: 'Group ' + value.conference,
       msgs: [],
       type: 'conference',
-      peers: [{ name: state.info.name, isOwn: true, num: 0 }],
+      peers: [{ name: state.info.name, isOwn: true, number: 0 }],
       conference: value.conference,
     });
+  },
+  responseConferencePeerList(state, value) {
+    const rooms = [...state.rooms];
+    state.rooms[state.conferenceRooms[value.req.conference]].peers =
+      value.res.peers;
+    state.rooms = rooms;
   },
 };

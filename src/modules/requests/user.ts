@@ -50,6 +50,7 @@ export const user: Module<any, any> = {
         name: value,
       } as ToxRequest;
       client.sendToxRequset(request);
+      context.dispatch('requests/user/Info', {}, { root: true });
     },
     GetName(context, value) {
       // "request": "GetName"

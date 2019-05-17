@@ -105,7 +105,8 @@ export class Client {
       case 'ConferencePeerPublicKey':
       case 'IsOwnPeerNumber':
       case 'ConferenceTitle':
-      case 'ChatList':
+      case 'ConferenceList':
+      case 'ConferencePeerList':
       case 'ConferenceType':
         store.dispatch('responses/conference/' + res.response, {res, req});
         break;
@@ -145,6 +146,7 @@ export class Client {
       case 'ConferenceTitle':
       case 'ConferencePeerName':
       case 'ConferencePeerName':
+      case 'ConferencePeerListChanged':
         store.dispatch('events/conference/' + event.event, event);
         break;
       case 'ConnectionStatus':

@@ -26,5 +26,8 @@ export const conference: Module<any, any> = {
         context.commit('event' + value.event, value, { root: true });
         db.updateRoom(context.rootState.rooms[context.rootState.conferenceRooms[value.conference]]);
     },
+    ConferencePeerListChanged(context, value) {
+      context.dispatch('requests/conference/GetPeerList', value.conference, { root: true });
+    },
   },
 };

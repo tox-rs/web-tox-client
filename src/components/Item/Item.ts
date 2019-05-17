@@ -29,9 +29,9 @@ export default Vue.extend({
       if (this.$store.state.info.friends && this.notification) {
         return this.notification.num !== null
           ? this.$store.state.info.friends[this.notification.num].name
-          : 'NULL';
+          : '';
       } else {
-        return 'NULL';
+        return '';
       }
     },
   },

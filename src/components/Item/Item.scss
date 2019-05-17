@@ -10,6 +10,11 @@
   .md-list-item.friend {
     padding: 0 8px;
     padding-bottom: 4px;
+    .md-button:not([disabled]).md-focused:before,
+    .md-button:not([disabled]):active:before,
+    .md-button:not([disabled]):hover:before {
+      background: transparent;
+    }
     .md-list-item-container {
       border-radius: 4px;
       background-color: #fff;
@@ -139,15 +144,17 @@
             margin-right: 10px;
           }
         }
-        .btn-group{
+        .btn-group {
           display: flex;
           position: absolute;
           width: 80px;
           right: 10px;
-          top: 9px;
+          top: 10%;
         }
         .message {
-          padding-left: 32px;
+          font-size: 14px;
+          padding-right: 80px;
+          white-space: normal;
           font-size: 14px;
           > span {
             font-size: 16px;

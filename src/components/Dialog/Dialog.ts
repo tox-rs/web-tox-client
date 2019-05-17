@@ -23,11 +23,33 @@ export default Vue.extend({
         this.$store.commit('DIALOG_TRIGGER');
       },
     },
+    dialogType(): string {
+      return this.$store.state.dialogType;
+    },
+    dialogContent(): object {
+      if (this.dialogType === 'friend') {
+        return {
+          title: 'Start a chat',
+          content: 'Who would you like to communicate with?',
+          placeholder: 'Tox ID',
+        };
+      } else {
+        return {
+          title: 'Set name',
+          content: ' ',
+          placeholder: 'Name',
+        };
+      }
+    },
   },
   mounted() {},
   methods: {
     onConfirm(value: any) {
-      this.$store.dispatch('requests/friend/AddFriend', { tox_id: value });
+      if (this.dialogType === 'friend') {
+        this.$store.dispatch('requests/friend/AddFriend', { tox_id: value });
+      } else {
+        this.$store.dispatch('requests/user/SetName', value);
+      }
     },
   },
 });

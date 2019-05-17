@@ -74,7 +74,7 @@ export default Vue.extend({
   methods: {
     add(type: string) {
       if (type === 'friend') {
-        this.$store.commit('DIALOG_TRIGGER');
+        this.$store.commit('DIALOG_TRIGGER', 'friend');
       } else if (type === 'member') {
         this.selectedFriends.forEach((val) => {
           this.$store.dispatch('requests/conference/InviteToConference', val);

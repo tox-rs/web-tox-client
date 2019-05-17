@@ -77,7 +77,8 @@ export const conference: Module<any, any> = {
       const request = {
         request: 'InviteToConference',
         friend: value,
-        conference: context.rootState.rooms[context.rootState.selectedRoom].conference,
+        conference:
+          context.rootState.rooms[context.rootState.selectedRoom].conference,
       } as ToxRequest;
       client.sendToxRequset(request);
     },
@@ -130,9 +131,9 @@ export const conference: Module<any, any> = {
       client.sendToxRequset(request);
     },
 
-    GetChatList(context, value) {
+    GetConferenceList(context, value) {
       // "request": "GetChatList",
-      const request = { request: 'GetChatList' } as ToxRequest;
+      const request = { request: 'GetConferenceList' } as ToxRequest;
       client.sendToxRequset(request);
     },
 
@@ -141,7 +142,16 @@ export const conference: Module<any, any> = {
       // "conference": number,
       const request = {
         request: 'GetConferenceType',
-        conference: value.conference,
+        conference: value,
+      } as ToxRequest;
+      client.sendToxRequset(request);
+    },
+    GetPeerList(context, value) {
+      // "request": "GetPeerList"
+      // "conference": number
+      const request = {
+        request: 'GetPeerList',
+        conference: value,
       } as ToxRequest;
       client.sendToxRequset(request);
     },

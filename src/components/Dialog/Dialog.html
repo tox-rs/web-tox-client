@@ -4,11 +4,10 @@
     id="prompt"
     :md-active.sync="active"
     v-model="value"
-    md-title="Start a chat"
-    md-content="Who would you like to communicate with?"
-    md-input-placeholder="Tox ID"
+    :md-title="dialogContent.title"
+    :md-content="dialogContent.content"
+    :md-input-placeholder="dialogContent.placeholder"
     md-confirm-text="OK" 
     @md-confirm="onConfirm"/>
-    
 </section>
 

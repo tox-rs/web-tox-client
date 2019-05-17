@@ -114,6 +114,7 @@ export default new Vuex.Store({
           db.readed = true;
         }
         context.dispatch('requests/user/Info');
+        context.dispatch('requests/conference/GetConferenceList');
       });
     },
   },

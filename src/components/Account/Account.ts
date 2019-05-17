@@ -14,5 +14,9 @@ export default Vue.extend({
     },
   },
   mounted() {},
-  methods: {},
+  methods: {
+    setName() {
+      this.$store.commit('DIALOG_TRIGGER', 'setName');
+    },
+  },
 });
