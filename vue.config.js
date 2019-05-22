@@ -8,8 +8,15 @@ module.exports = {
       appleMobileWebAppStatusBarStyle: 'black',
   
       // configure the workbox plugin
-      workboxPluginMode: 'GenerateSW',
+      workboxPluginMode: 'InjectManifest',
       workboxOptions: {
+          // swSrc is required in InjectManifest mode.
+          swSrc: 'public/service-worker.js',
+          importWorkboxFrom:'local',
+          globDirectory: '.' ,
+          globPatterns: ['dist/*.{js,png,html,css}'],
+          maximumFileSizeToCacheInBytes : 20 * 1024 * 1024   
+          // ...other Workbox options...
       }
     }
   }

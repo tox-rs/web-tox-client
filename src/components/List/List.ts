@@ -36,12 +36,10 @@ export default Vue.extend({
             delete info.friends;
             delete info.response;
             const arr = [];
-            if (room.type === 'friend') {
-              const numberFriend = room.friend;
-              arr.push(info);
-              arr.push(this.$store.state.info.friends[numberFriend]);
-              return arr;
-            }
+            const numberFriend = room.friend;
+            arr.push(info);
+            arr.push(this.$store.state.info.friends[numberFriend]);
+            return arr;
           }
           if (room.type === 'conference') {
             return room.peers;
@@ -49,7 +47,7 @@ export default Vue.extend({
         }
       }
     },
-    notifications():object[] {
+    notifications(): object[] {
       return this.$store.state.notifications;
     },
     addMember(): boolean {
