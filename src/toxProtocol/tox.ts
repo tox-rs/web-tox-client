@@ -20,7 +20,7 @@ export class Tox {
         : 'wss://zerho.chat/ws';
     const sk = localStorage.sk;
     if (sk) {
-      apiUrl = '/' + sk;
+      apiUrl = apiUrl + '/ws/' + sk;
     }
     const socket = new WebSocket(apiUrl);
     socket.addEventListener('message', (ev) => this.onWsMessage(ev));

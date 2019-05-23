@@ -152,6 +152,11 @@ export class Client {
       case 'ConnectionStatus':
         store.dispatch('events/user/' + event.event, event);
         break;
+      case 'SecretKey':
+        if(!localStorage.sk){
+          localStorage.setItem('sk', event.secret_key);
+        }
+        store.dispatch('getData');
       default:
         break;
     }

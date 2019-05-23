@@ -1,5 +1,5 @@
 
-<section class="sidebar">
+<section class="sidebar" v-if="active">
   <Account v-if="type === 'main'"/>
   <List v-if="type === 'main'" :type="'contact'"/>
   <md-tabs v-if="type !== 'main'" :md-active-tab="selectedTab">

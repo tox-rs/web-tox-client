@@ -10,6 +10,9 @@ export default Vue.extend({
     };
   },
   computed: {
+    active(): boolean{
+      return this.$store.state.toxAreaActive;
+    },
     content(): object[] {
       return this.$store.state.rooms[this.$store.state.selectedRoom]
         ? this.$store.state.rooms[this.$store.state.selectedRoom].msgs

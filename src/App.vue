@@ -159,9 +159,6 @@ div.handle.handle-mr {
   }
 }
 @media (max-width: 750px) {
-  .sidebar {
-    display: none;
-  }
   .room-header .md-tabs {
     display: none;
   }

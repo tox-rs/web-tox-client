@@ -15,12 +15,15 @@ export default Vue.extend({
     selectedTab(): string {
       return this.$store.state.selectedTab;
     },
+    active(): boolean {
+      if (this.type === 'main') {
+        return this.$store.state.mainSidebarActive;
+      } else {
+        return this.$store.state.subSidebarActive;
+      }
+    },
   },
-  created() {
-    if (this.type === 'main') {
-      this.$store.dispatch('getData');
-    }
-  },
+  created() {},
   mounted() {},
   methods: {},
 });

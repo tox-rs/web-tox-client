@@ -58,6 +58,9 @@ export default new Vuex.Store({
     selectedContact: null,
     searchActive: false,
     addMemberActive: false,
+    toxAreaActive: true,
+    mainSidebarActive: true,
+    subSidebarActive: true,
   },
   modules: {
     events,

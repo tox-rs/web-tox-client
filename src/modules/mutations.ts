@@ -90,6 +90,18 @@ export const mutations: MutationTree<any> = {
   ADD_MEMBER_TRIGGER(state) {
     state.addMemberActive = !state.addMemberActive;
   },
+  TOX_AREA_TRIGGER(state) {
+    console.log('TOX_AREA_TRIGGER');
+    state.toxAreaActive = !state.toxAreaActive;
+  },
+  MAIN_SIDEBAR_TRIGGER(state) {
+    console.log('MAIN_SIDEBAR_TRIGGER');
+    state.mainSidebarActive = !state.mainSidebarActive;
+  },
+  SUB_SIDEBAR_TRIGGER(state) {
+    console.log('SUB_SIDEBAR_TRIGGER');
+    state.subSidebarActive = !state.subSidebarActive;
+  },
   eventConnectionStatus(state, value) {
     state.info.connection = value.status;
   },
