@@ -8,16 +8,18 @@ export default Vue.extend({
   },
   computed: {
     status(): string {
-      if (this.$store.state.info.friends) {
-        return this.$store.state.info.friends[this.$props.room.friend]
-          .status === 'None'
-          ? Math.round(
-              this.$store.state.info.friends[this.$props.room.friend]
-                .last_online / 100,
-            ) === Math.round(Date.now() / 100000)
+      if (this.$store.state.info.friends[this.$props.room.friend].connection) {
+        if (
+          this.$store.state.info.friends[this.$props.room.friend].connection ===
+          'None'
+        ) {
+          return 'Offline';
+        } else {
+          return this.$store.state.info.friends[this.$props.room.friend]
+            .status === 'None'
             ? 'Online'
-            : 'Offline'
-          : this.$store.state.info.friends[this.$props.room.friend].status;
+            : this.$store.state.info.friends[this.$props.room.friend].status;
+        }
       } else {
         return 'Offline';
       }

@@ -19,6 +19,9 @@ export class IndexedDB {
   }
 
   public async addRoom(val: any) {
+    if (val.type === 'conference') {
+      return;
+    }
     await db.transaction(
       'rw',
       db.rooms,
@@ -44,7 +47,10 @@ export class IndexedDB {
     if (!this.readed) {
       return false;
     }
-    const val = {...value};
+    if (value.type === 'conference') {
+      return;
+    }
+    const val = { ...value };
     val.typing = null;
     await db.transaction('rw', db.rooms, async () => {
       let room;
@@ -83,6 +89,11 @@ export class IndexedDB {
     rooms.forEach((room) => {
       roomsArr[room.id] = room;
     });
+    if (infoUser) {
+      infoUser.friends.forEach((friend: any) => {
+        friend.connection = 'None';
+      });
+    }
     console.log(infoUser);
     return {
       rooms: roomsArr,

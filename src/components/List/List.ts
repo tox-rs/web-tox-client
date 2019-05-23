@@ -8,7 +8,7 @@ export default Vue.extend({
     return { selectedFriends: [] };
   },
   computed: {
-    conference(): object[] {
+    conferences(): object[] {
       return this.$store.state.rooms.filter((room: any) => {
         if (room) {
           if (room.type === 'conference') {
@@ -17,7 +17,7 @@ export default Vue.extend({
         }
       });
     },
-    friend(): object[] {
+    friends(): object[] {
       return this.$store.state.rooms.filter((room: any) => {
         if (room) {
           if (room.type === 'friend') {
@@ -25,6 +25,27 @@ export default Vue.extend({
           }
         }
       });
+    },
+    members(): object[] {
+      if (this.$store.state.info && this.$store.state.rooms.length) {
+        const selectedRoom = this.$store.state.selectedRoom;
+        const room = this.$store.state.rooms[selectedRoom];
+        return this.$store.state.info.friends.filter((friend: any) => {
+          if (friend.connection !== 'None' && friend.connection !== undefined) {
+            let isPeer = false;
+            room.peers.forEach((peer: any) => {
+              if (friend.public_key === peer.public_key) {
+                isPeer = true;
+              }
+            });
+            if (!isPeer) {
+              return friend;
+            }
+          }
+        });
+      } else {
+        return [];
+      }
     },
     contacts(): object[] | undefined {
       if (this.$store.state.rooms.length) {
@@ -42,7 +63,11 @@ export default Vue.extend({
             return arr;
           }
           if (room.type === 'conference') {
-            return room.peers;
+            return room.peers.filter((peer: any) => {
+              if (peer.name) {
+                return peer;
+              }
+            });
           }
         }
       }

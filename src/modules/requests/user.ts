@@ -13,6 +13,29 @@ export const user: Module<any, any> = {
       const request = { request: 'Info' } as ToxRequest;
       client.sendToxRequset(request);
     },
+    SetInfo(context, value) {
+      // "request": "SetInfo"
+      // "nospam": string
+      // "name": string
+      // "status": UserStatus
+      // "status_message": string
+      // "friends": string[]
+      let arr = [];
+      if (context.rootState.info.friends.length > 0) {
+        arr = context.rootState.info.friends.map((friend: any) => {
+          return friend.public_key;
+        });
+      }
+      const request = {
+        request: 'SetInfo',
+        nospam: context.rootState.info.nospam,
+        name: context.rootState.info.name,
+        status: context.rootState.info.status,
+        status_message: context.rootState.info.status_message,
+        friends: arr,
+      } as ToxRequest;
+      client.sendToxRequset(request);
+    },
     GetConnectionStatus(context, value) {
       // "request": "GetConnectionStatus"
       const request = { request: 'GetConnectionStatus' } as ToxRequest;
@@ -50,7 +73,6 @@ export const user: Module<any, any> = {
         name: value,
       } as ToxRequest;
       client.sendToxRequset(request);
-      context.dispatch('requests/user/Info', {}, { root: true });
     },
     GetName(context, value) {
       // "request": "GetName"

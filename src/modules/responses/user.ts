@@ -47,20 +47,6 @@ export const user: Module<any, any> = {
               context.rootState.friendRooms[element.number]
             ],
           );
-        } else {
-          context.commit(
-            'UPDATE_FRIEND_ROOM',
-            {
-              name: element.name || 'New room',
-              friend: element.number,
-            },
-            { root: true },
-          );
-          db.updateRoom(
-            context.rootState.rooms[
-              context.rootState.friendRooms[element.number]
-            ],
-          );
         }
       });
     },
@@ -84,6 +70,7 @@ export const user: Module<any, any> = {
       context.commit('response' + value.res.response, value.res, {
         root: true,
       });
+      db.updateInfo(context.rootState.info);
     },
     PublicKey(context, value) {
       // "response": "PublicKey"

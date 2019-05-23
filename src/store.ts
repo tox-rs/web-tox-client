@@ -36,7 +36,19 @@ interface Notification {
   type: string;
   readed: boolean;
 }
-const info = {} as Responses.Info;
+interface Info {
+  connection: string;
+  nospam: string;
+  address: string;
+  public_key: string;
+  response: 'Info';
+  tox_id: string;
+  name: string;
+  status: string;
+  status_message: string;
+  friends: object[];
+}
+const info = {} as Info;
 const rooms: Room[] = [];
 const nums: number[] = [];
 const objs: object[] = [];
@@ -100,21 +112,24 @@ export default new Vuex.Store({
       );
     },
     getData(context) {
-      context.dispatch('responses/conference/test');
-      context.dispatch('responses/friend/test');
-      context.dispatch('responses/user/test');
-      context.dispatch('requests/conference/test');
-      context.dispatch('requests/friend/test');
-      context.dispatch('requests/user/test');
-      context.dispatch('events/conference/test');
-      context.dispatch('events/friend/test');
-      context.dispatch('events/user/test');
+      // context.dispatch('responses/conference/test');
+      // context.dispatch('responses/friend/test');
+      // context.dispatch('responses/user/test');
+      // context.dispatch('requests/conference/test');
+      // context.dispatch('requests/friend/test');
+      // context.dispatch('requests/user/test');
+      // context.dispatch('events/conference/test');
+      // context.dispatch('events/friend/test');
+      // context.dispatch('events/user/test');
       db.getData().then((res) => {
-        if (res) {
+        if (res.info) {
           context.commit('INIT_STATE', res);
+          context.dispatch('requests/user/SetInfo');
           db.readed = true;
         } else {
-          db.readed = true;
+          if (!context.state.info.nospam) {
+            context.dispatch('requests/user/GetNospam');
+          }
         }
         context.dispatch('requests/user/Info');
         context.dispatch('requests/conference/GetConferenceList');

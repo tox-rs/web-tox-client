@@ -13,7 +13,7 @@
     </md-list-item>
   </template>
 
-  <template v-if="type === 'group' && !selectedContact && contact.name">
+  <template v-if="type === 'group' && !selectedContact">
     <md-list-item :class="type">
       <md-avatar class="md-avatar-icon">{{
         contact.name[0].toUpperCase()

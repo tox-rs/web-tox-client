@@ -14,8 +14,8 @@
       </div>
       <md-field v-if="addMember && isConference">
           <label>Friends</label>
-          <md-select v-model="selectedFriends" multiple md-dense>
-            <md-option v-for="item in friend" :value="item.friend">{{item.name}}</md-option>
+          <md-select v-model="selectedFriends" multiple md-dense :disabled="members.length === 0 ? true : false">
+            <md-option v-for="item in members" :value="item.number">{{item.name}}</md-option>
           </md-select>
       </md-field>
         <Item v-for="item in contacts" :contact="item" :type="type"/>
@@ -28,7 +28,7 @@
         </md-button>
         </span>
         <md-list slot="md-expand">
-            <Item v-for="item in friend" :room="item" type="friend"/>
+            <Item v-for="item in friends" :room="item" type="friend"/>
         </md-list>
       </md-list-item>
       <md-list-item md-expand md-expanded>
@@ -38,7 +38,7 @@
           </md-button>
           </span>
           <md-list slot="md-expand">
-              <Item  v-for="item in conference" :room="item" type="conference"/>
+              <Item  v-for="item in conferences" :room="item" type="conference"/>
           </md-list>
       </md-list-item>
     </md-list>

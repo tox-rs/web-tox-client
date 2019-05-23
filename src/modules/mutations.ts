@@ -253,7 +253,23 @@ export const mutations: MutationTree<any> = {
     // "status": UserStatus,
     // "status_message": string
     // "friends": FriendInfo[],
-    state.info = value;
+    const info = { ...state.info };
+    Object.keys(value).map((key) => {
+      if (key !== 'friends') {
+        info[key] = value[key];
+      } else {
+        if (info.friends && value.friends) {
+          value.friends.forEach((friend: any, index: number) => {
+            if (!info.friends[index]) {
+              info.friends.push(friend);
+            }
+          });
+        } else {
+          info.friends = [];
+        }
+      }
+    });
+    state.info = info;
   },
   responseConnectionStatus(state, value) {
     // "response": "ConnectionStatus"
@@ -317,8 +333,47 @@ export const mutations: MutationTree<any> = {
   },
   responseConferencePeerList(state, value) {
     const rooms = [...state.rooms];
-    state.rooms[state.conferenceRooms[value.req.conference]].peers =
-      value.res.peers;
+    const room = state.rooms[state.conferenceRooms[value.req.conference]];
+    if (room.peers) {
+      if (room.peers.length > value.res.peers.length) {
+        const arr: any = [];
+        value.res.peers.forEach((peer: any, key: any) => {
+          room.peers.forEach((roomPeer: any, index: any) => {
+            if (peer.public_key === roomPeer.public_key) {
+              arr.push(roomPeer);
+            }
+          });
+        });
+        room.peers = arr;
+      } else {
+        value.res.peers.forEach((peer: any, key: any) => {
+          if (!room.peers[key]) {
+            room.peers[key] = {
+              name: '',
+              number: peer.number,
+              public_key: peer.public_key,
+            };
+          } else {
+            room.peers[key].number = peer.number;
+            room.peers[key].public_key = peer.public_key;
+          }
+        });
+      }
+    } else {
+      value.res.peers.forEach((peer: any, key: any) => {
+        if (!room.peers[key]) {
+          room.peers[key] = {
+            name: '',
+            number: peer.number,
+            public_key: peer.public_key,
+          };
+        } else {
+          room.peers[key].number = peer.number;
+          room.peers[key].public_key = peer.public_key;
+        }
+      });
+    }
+    state.rooms[state.conferenceRooms[value.req.conference]] = room;
     state.rooms = rooms;
   },
 };

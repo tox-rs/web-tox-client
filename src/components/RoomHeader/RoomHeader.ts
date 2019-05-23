@@ -12,6 +12,11 @@ export default Vue.extend({
         ? this.$store.state.rooms[this.$store.state.selectedRoom].name
         : 'Empty Room';
     },
+    count(): number {
+      return this.$store.state.notifications
+        ? this.$store.state.notifications.length
+        : 0;
+    },
   },
   mounted() {},
   methods: {

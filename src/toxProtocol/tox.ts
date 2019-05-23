@@ -15,7 +15,7 @@ export class Tox {
 
   constructor() {
     let apiUrl =
-      window.location.origin === 'http://localhost:8081'
+      window.location.origin === 'http://localhost:8080'
         ? 'ws://127.0.0.1:2794'
         : 'wss://zerho.chat/ws';
     const sk = localStorage.sk;
@@ -44,7 +44,6 @@ export class Tox {
     if (typeof event.data === 'string') {
       // FIXME: this code does no validation
       const data = JSON.parse(event.data.toString());
-
       if (data.response !== undefined) {
         this.pushResponse(data as ToxResponse);
       } else if (data.event !== undefined) {
@@ -53,6 +52,8 @@ export class Tox {
         });
 
         this.eventTarget.dispatchEvent(event);
+      } else {
+        this.pushResponse({ response: 'Ok' } as ToxResponse);
       }
     }
   }

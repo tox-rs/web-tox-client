@@ -89,8 +89,13 @@ export class Client {
   }
   public sendToxRequset(req: ToxRequest) {
     this.tox.sendRequest(req).then((res: ToxResponse) => {
-      this.onToxResponse(res, req);
+      if (res) {
+        this.onToxResponse(res, req);
+      }
     });
+    if (req.request === 'SetInfo' || req.request === 'SetName') {
+      this.tox.pushResponse({ response: 'Ok' } as ToxResponse);
+    }
   }
   public onToxResponse(res: ToxResponse, req: ToxRequest) {
     console.log(res);
@@ -98,7 +103,7 @@ export class Client {
       case 'Friend':
       case 'FriendExists':
       case 'LastOnline':
-        store.dispatch('responses/friend/' + res.response, {res, req});
+        store.dispatch('responses/friend/' + res.response, { res, req });
         break;
       case 'Conference':
       case 'ConferencePeerCount':
@@ -108,7 +113,7 @@ export class Client {
       case 'ConferenceList':
       case 'ConferencePeerList':
       case 'ConferenceType':
-        store.dispatch('responses/conference/' + res.response, {res, req});
+        store.dispatch('responses/conference/' + res.response, { res, req });
         break;
       case 'Ok':
       case 'MessageSent':
@@ -120,7 +125,7 @@ export class Client {
       case 'Name':
       case 'StatusMessage':
       case 'Status':
-        store.dispatch('responses/user/' + res.response, {res, req});
+        store.dispatch('responses/user/' + res.response, { res, req });
         break;
       default:
         break;
@@ -153,7 +158,7 @@ export class Client {
         store.dispatch('events/user/' + event.event, event);
         break;
       case 'SecretKey':
-        if(!localStorage.sk){
+        if (!localStorage.sk) {
           localStorage.setItem('sk', event.secret_key);
         }
         store.dispatch('getData');

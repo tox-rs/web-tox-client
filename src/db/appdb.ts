@@ -1,6 +1,5 @@
 import Dexie from 'dexie';
-import { Responses } from 'ws-tox-protocol';
-const info = {} as Responses.Info;
+
 interface Info {
   connection: string;
   nospam: string;
@@ -35,7 +34,7 @@ export class AppDatabase extends Dexie {
     { conference: number; room: number },
     number
   >;
-  public info: Dexie.Table<Responses.Info, number>;
+  public info: Dexie.Table<Info, number>;
   constructor() {
     super('WebTox');
 
