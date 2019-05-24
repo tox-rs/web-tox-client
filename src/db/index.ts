@@ -71,7 +71,12 @@ export class IndexedDB {
     });
     return true;
   }
-
+  public async deleteRoom(value: any) {
+    await db.transaction('rw', db.rooms, db.friendRooms, async () => {
+      await db.rooms.where({ friend: value }).delete();
+      await db.friendRooms.where({ friend: value }).delete();
+    });
+  }
   public async getData() {
     const rooms = await db.rooms.toCollection().toArray();
     const friendRooms = await db.friendRooms.toCollection().toArray();

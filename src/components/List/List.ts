@@ -47,7 +47,7 @@ export default Vue.extend({
         return [];
       }
     },
-    contacts(): object[] | undefined {
+    contacts(): object[] {
       if (this.$store.state.rooms.length) {
         const selectedRoom = this.$store.state.selectedRoom;
         const room = this.$store.state.rooms[selectedRoom];
@@ -69,7 +69,12 @@ export default Vue.extend({
               }
             });
           }
+          return [];
+        } else {
+          return [];
         }
+      } else {
+        return [];
       }
     },
     notifications(): object[] {
@@ -79,7 +84,7 @@ export default Vue.extend({
       return this.$store.state.addMemberActive;
     },
     isConference(): boolean {
-      if (this.$store.state.rooms.length) {
+      if (this.$store.state.rooms.length > 1) {
         return this.$store.state.rooms[this.$store.state.selectedRoom].type ===
           'conference'
           ? true

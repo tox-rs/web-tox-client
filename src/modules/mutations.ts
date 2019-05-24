@@ -48,6 +48,18 @@ export const mutations: MutationTree<any> = {
     newRooms[index].peers = value.peers;
     state.rooms = newRooms;
   },
+  DELETE_FRIEND_ROOM(state, value) {
+    const newRooms = [...state.rooms];
+    newRooms.splice(state.friendRooms[value], 1);
+    state.friendRooms.splice(value, 1);
+    state.rooms = newRooms;
+  },
+  DELETE_CONFERENCE_ROOM(state, value) {
+    const newRooms = [...state.rooms];
+    newRooms.splice(state.conferenceRooms[value], 1);
+    state.conferenceRooms.splice(value, 1);
+    state.rooms = newRooms;
+  },
   ADD_NOTIFICATION(state, value) {
     state.notifications.push({
       id: state.notifications.length,
@@ -254,19 +266,37 @@ export const mutations: MutationTree<any> = {
     // "status_message": string
     // "friends": FriendInfo[],
     const info = { ...state.info };
+    if (info.friends && value.friends) {
+      if (info.friends.length > value.friends.length) {
+        const arr: any = [];
+        value.friends.forEach((friend: any) => {
+          info.friends.forEach((infoFriend: any) => {
+            if (friend.public_key === infoFriend.public_key) {
+              arr.push(infoFriend);
+            }
+          });
+        });
+        info.friends = arr;
+      } else if (info.friends.length < value.friends.length) {
+        const arr: any = [];
+        value.friends.forEach((friend: any, key: any) => {
+          arr.push(friend);
+          info.friends.forEach((infoFriend: any) => {
+            if (friend.public_key === infoFriend.public_key) {
+              arr[key].name = infoFriend.name;
+            }
+          });
+        });
+        info.friends = arr;
+      }
+    } else if (!info.friends && value.friends) {
+      info.friends = value.friends;
+    } else {
+      info.friends = [];
+    }
     Object.keys(value).map((key) => {
       if (key !== 'friends') {
         info[key] = value[key];
-      } else {
-        if (info.friends && value.friends) {
-          value.friends.forEach((friend: any, index: number) => {
-            if (!info.friends[index]) {
-              info.friends.push(friend);
-            }
-          });
-        } else {
-          info.friends = [];
-        }
       }
     });
     state.info = info;

@@ -114,5 +114,14 @@ export const friend: Module<any, any> = {
       } as ToxRequest;
       client.sendToxRequset(request);
     },
+    DeleteFriend(context, value) {
+      // "request": "DeleteFriend"
+      // "friend": number
+      const request = {
+        request: 'DeleteFriend',
+        friend: value,
+      } as ToxRequest;
+      client.sendToxRequset(request);
+    },
   },
 };

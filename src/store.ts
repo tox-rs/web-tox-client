@@ -98,6 +98,10 @@ export default new Vuex.Store({
         context.commit('ADD_MEMBER_TRIGGER');
       }
     },
+    deleteFriendRoom(context, value) {
+      context.commit('DELETE_FRIEND_ROOM', value);
+      db.deleteRoom(value);
+    },
     showNotification(context, value) {
       Vue.notification.show(
         'Zerho Chat',

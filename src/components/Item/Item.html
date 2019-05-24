@@ -7,18 +7,18 @@
         >{{ room.name[0].toUpperCase() }}</md-avatar
       >
       <span class="md-list-item-text">{{ room.name }}</span>
-      <md-button class="md-icon-button md-list-action">
-        <md-icon>more_vert</md-icon>
+      <md-button class="md-icon-button md-list-action" @click.stop="deleteItem">
+        <md-icon>close</md-icon>
       </md-button>
     </md-list-item>
   </template>
 
   <template v-if="type === 'group' && !selectedContact">
     <md-list-item :class="type">
-      <md-avatar class="md-avatar-icon">{{
-        contact.name[0].toUpperCase()
+      <md-avatar class="md-avatar-icon">{{ contact.name ?
+        contact.name[0].toUpperCase() : 'N'
       }}</md-avatar>
-      <span class="md-list-item-text">{{ contact.name }}</span>
+      <span class="md-list-item-text">{{ contact.name ? contact.name : 'New friend'}}</span>
       <md-button class="md-icon-button md-list-action">
         <md-icon>keyboard_arrow_right</md-icon>
       </md-button>

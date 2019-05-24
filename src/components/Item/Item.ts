@@ -69,5 +69,14 @@ export default Vue.extend({
     deleteNotification() {
       this.$store.commit('DELETE_NOTIFICATION', this.notification.id);
     },
+    deleteItem() {
+      if (this.room.type === 'friend') {
+        this.$store.dispatch('requests/friend/DeleteFriend', this.room.friend);
+        this.$store.dispatch('deleteFriendRoom', this.room.friend);
+      } else {
+        this.$store.dispatch('requests/conference/DeleteConference', this.room.conference);
+        this.$store.commit('DELETE_CONFERENCE_ROOM', this.room.conference);
+      }
+    },
   },
 });
