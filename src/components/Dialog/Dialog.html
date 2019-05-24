@@ -1,13 +1,38 @@
 
 <section class="dialog">
-    <md-dialog-prompt
-    id="prompt"
-    :md-active.sync="active"
-    v-model="value"
-    :md-title="dialogContent.title"
-    :md-content="dialogContent.content"
-    :md-input-placeholder="dialogContent.placeholder"
-    md-confirm-text="OK" 
-    @md-confirm="onConfirm"/>
+    <md-dialog v-if="dialogType !== 'QR' && dialogType !== 'QRcode'" id="prompt" :md-active.sync="active">
+    <md-dialog-title>{{dialogContent.title}}</md-dialog-title>
+    <md-dialog-content>{{dialogContent.content}}</md-dialog-content>
+    <md-dialog-content>
+        <md-field>
+            <md-input :placeholder="dialogContent.placeholder" v-model="value"></md-input>
+        </md-field>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-button v-if="navigator.appVersion.match(/iPhone/) || navigator.appVersion.match(/Android/)" @click="openQRDialog">Scan QR</md-button>
+        <md-button class="md-primary md-raised" @click="active = false">Close</md-button>
+        <md-button class="md-primary" @click="onConfirm">Ok</md-button>
+    </md-dialog-actions>
+    </md-dialog>
+    <md-dialog v-if="dialogType === 'QR'" id="prompt" :md-active.sync="active">
+        <md-dialog-title>{{dialogContent.title}}</md-dialog-title>
+        <md-dialog-content>{{dialogContent.content}}</md-dialog-content>
+        <md-dialog-content>
+            <qrcode-stream @decode="onDecode"></qrcode-stream>
+        </md-dialog-content>
+        
+        <md-dialog-actions>
+            <md-button class="md-primary md-raised" @click="active = false">Close</md-button>
+        </md-dialog-actions>
+    </md-dialog>
+    <md-dialog v-if="dialogType === 'QRcode'" :md-active.sync="active">
+        <md-dialog-title>ToxID</md-dialog-title>
+        <md-dialog-content>
+            <qr-code :text="qrCode"></qr-code>
+        </md-dialog-content>
+        <md-dialog-actions>
+            <md-button class="md-primary md-raised" @click="active = false">Close</md-button>
+        </md-dialog-actions>
+    </md-dialog>
 </section>
 

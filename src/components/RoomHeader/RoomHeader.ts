@@ -26,5 +26,8 @@ export default Vue.extend({
     openSearch() {
       this.$store.commit('SEARCH_TRIGGER');
     },
+    openQRcode() {
+      this.$store.commit('DIALOG_TRIGGER', 'QRcode');
+    },
   },
 });

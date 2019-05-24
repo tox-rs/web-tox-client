@@ -93,7 +93,9 @@ export const mutations: MutationTree<any> = {
     state.selectedContact = value;
   },
   DIALOG_TRIGGER(state, value) {
-    state.dialogActive = !state.dialogActive;
+    if (value !== 'QR') {
+      state.dialogActive = !state.dialogActive;
+    }
     state.dialogType = value;
   },
   SEARCH_TRIGGER(state) {

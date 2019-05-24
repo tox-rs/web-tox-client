@@ -1,22 +1,18 @@
 import { Vue, Watch } from 'vue-property-decorator';
+import { QrcodeStream } from 'vue-qrcode-reader';
+import VueQRCodeComponent from 'vue-qrcode-component';
+Vue.component('qr-code', VueQRCodeComponent);
+
 export default Vue.extend({
   name: 'vue-dialog',
-  components: {},
+  components: { QrcodeStream, VueQRCodeComponent },
   props: [],
   data() {
-    return { value: null };
+    return { value: null, navigator: navigator };
   },
   computed: {
     active: {
       get(): boolean {
-        if (this.$store.state.dialogActive) {
-          const self = this;
-          setTimeout(() => {
-            self.$children[0].$children[0].$children[3].$children[1].$el.classList.add(
-              'md-raised',
-            );
-          }, 100);
-        }
         return this.$store.state.dialogActive;
       },
       set() {
@@ -26,6 +22,9 @@ export default Vue.extend({
     dialogType(): string {
       return this.$store.state.dialogType;
     },
+    qrCode(): string {
+      return this.$store.state.info.tox_id;
+    },
     dialogContent(): object {
       if (this.dialogType === 'friend') {
         return {
@@ -33,23 +32,39 @@ export default Vue.extend({
           content: 'Who would you like to communicate with?',
           placeholder: 'Tox ID',
         };
-      } else {
+      } else if (this.dialogType === 'setName') {
         return {
           title: 'Set name',
           content: ' ',
           placeholder: 'Name',
+        };
+      } else {
+        return {
+          title: 'Scan QR',
         };
       }
     },
   },
   mounted() {},
   methods: {
-    onConfirm(value: any) {
+    onConfirm() {
       if (this.dialogType === 'friend') {
-        this.$store.dispatch('requests/friend/AddFriend', { tox_id: value });
+        this.$store.dispatch('requests/friend/AddFriend', {
+          tox_id: this.value,
+        });
       } else {
-        this.$store.dispatch('requests/user/SetName', value);
+        this.$store.dispatch('requests/user/SetName', this.value);
       }
+      this.active = false;
+    },
+    openQRDialog() {
+      this.$store.commit('DIALOG_TRIGGER', 'QR');
+    },
+    onDecode(decodedString: any) {
+      this.$store.dispatch('requests/friend/AddFriend', {
+        tox_id: decodedString,
+      });
+      this.$store.commit('DIALOG_TRIGGER');
     },
   },
 });
