@@ -56,6 +56,7 @@ export default Vue.extend({
         this.$store.dispatch('requests/user/SetName', this.value);
       }
       this.active = false;
+      this.value = null;
     },
     openQRDialog() {
       this.$store.commit('DIALOG_TRIGGER', 'QR');

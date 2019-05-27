@@ -10,8 +10,8 @@
     </md-dialog-content>
     <md-dialog-actions>
         <md-button v-if="navigator.appVersion.match(/iPhone/) || navigator.appVersion.match(/Android/)" @click="openQRDialog">Scan QR</md-button>
-        <md-button class="md-primary md-raised" @click="active = false">Close</md-button>
-        <md-button class="md-primary" @click="onConfirm">Ok</md-button>
+        <md-button class="md-primary" @click="active = false">Close</md-button>
+        <md-button class="md-primary md-raised" @click="onConfirm">Ok</md-button>
     </md-dialog-actions>
     </md-dialog>
     <md-dialog v-if="dialogType === 'QR'" id="prompt" :md-active.sync="active">

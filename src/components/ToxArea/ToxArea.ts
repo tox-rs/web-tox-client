@@ -10,7 +10,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    active(): boolean{
+    active(): boolean {
       return this.$store.state.toxAreaActive;
     },
     content(): object[] {
@@ -41,8 +41,9 @@ export default Vue.extend({
           'friend'
         ) {
           this.$store.dispatch('requests/friend/SendFriendMessage', {
-            friend: this.$store.state.rooms[this.$store.state.selectedRoom]
-              .friend,
+            friend: this.$store.state.info.friends[
+              this.$store.state.rooms[this.$store.state.selectedRoom].friend
+            ].number,
             message: this.message,
           });
         } else {

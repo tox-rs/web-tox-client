@@ -3,6 +3,7 @@
     <Sidebar type="main"/>
     <Room/>
     <Dialog/>
+    <Notification/>
   </div>
 </template>
 
@@ -11,12 +12,14 @@ import { Component, Vue } from 'vue-property-decorator';
 import Sidebar from '@/components/Sidebar/index.vue';
 import Room from '@/components/Room/index.vue';
 import Dialog from '@/components/Dialog/index.vue';
+import Notification from '@/components/Notification/index.vue';
 
 @Component({
   components: {
     Sidebar,
     Room,
     Dialog,
+    Notification,
   },
 })
 export default class Home extends Vue {

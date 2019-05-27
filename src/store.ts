@@ -73,6 +73,7 @@ export default new Vuex.Store({
     toxAreaActive: true,
     mainSidebarActive: true,
     subSidebarActive: true,
+    err: '',
   },
   modules: {
     events,
@@ -99,8 +100,8 @@ export default new Vuex.Store({
       }
     },
     deleteFriendRoom(context, value) {
-      context.commit('DELETE_FRIEND_ROOM', value);
       db.deleteRoom(value);
+      context.dispatch('selectRoom', 1);
     },
     showNotification(context, value) {
       Vue.notification.show(

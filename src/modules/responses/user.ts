@@ -32,23 +32,30 @@ export const user: Module<any, any> = {
         root: true,
       });
       db.updateInfo(context.rootState.info);
-      context.rootState.info.friends.forEach((element: any) => {
-        if (context.rootState.friendRooms[element.number] === undefined) {
-          context.commit(
-            'ADD_FRIEND_ROOM',
-            {
-              name: element.name || 'New room',
-              friend: element.number,
-            },
-            { root: true },
-          );
-          db.addRoom(
-            context.rootState.rooms[
-              context.rootState.friendRooms[element.number]
-            ],
-          );
-        }
-      });
+      context.commit(
+        'UPDATE_ROOM_LIST',
+        {},
+        {
+          root: true,
+        },
+      );
+      // context.rootState.info.friends.forEach((element: any) => {
+      //   if (context.rootState.friendRooms[element.number] === undefined) {
+      //     context.commit(
+      //       'ADD_FRIEND_ROOM',
+      //       {
+      //         name: element.name || 'New room',
+      //         friend: element.number,
+      //       },
+      //       { root: true },
+      //     );
+      //     db.addRoom(
+      //       context.rootState.rooms[
+      //         context.rootState.friendRooms[element.number]
+      //       ],
+      //     );
+      //   }
+      // });
     },
     ConnectionStatus(context, value) {
       // "response": "ConnectionStatus"

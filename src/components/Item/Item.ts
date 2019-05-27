@@ -71,11 +71,20 @@ export default Vue.extend({
     },
     deleteItem() {
       if (this.room.type === 'friend') {
-        this.$store.dispatch('requests/friend/DeleteFriend', this.room.friend);
-        this.$store.dispatch('deleteFriendRoom', this.room.friend);
+        this.$store.dispatch(
+          'requests/friend/DeleteFriend',
+          this.$store.state.info.friends[this.$props.room.friend].number,
+        );
+        this.$store.dispatch(
+          'deleteFriendRoom',
+          this.$store.state.info.friends[this.$props.room.friend].number,
+        );
       } else {
-        this.$store.dispatch('requests/conference/DeleteConference', this.room.conference);
-        this.$store.commit('DELETE_CONFERENCE_ROOM', this.room.conference);
+        this.$store.dispatch(
+          'requests/conference/DeleteConference',
+          this.room.conference,
+        );
+        this.$store.commit('UPDATE_ROOM_LIST', this.room.conference);
       }
     },
   },

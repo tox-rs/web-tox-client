@@ -91,9 +91,9 @@ export class IndexedDB {
     conferenceRooms.forEach((conferenceRoom) => {
       conferenceRoomsArr[conferenceRoom.conference] = conferenceRoom.room;
     });
-    rooms.forEach((room) => {
-      roomsArr[room.id] = room;
-    });
+    // rooms.forEach((room) => {
+    //   roomsArr[room.id] = room;
+    // });
     if (infoUser) {
       infoUser.friends.forEach((friend: any) => {
         friend.connection = 'None';
@@ -101,7 +101,7 @@ export class IndexedDB {
     }
     console.log(infoUser);
     return {
-      rooms: roomsArr,
+      rooms: rooms,
       friendRooms: friendRoomsArr,
       info: infoUser,
       conferenceRooms: conferenceRoomsArr,

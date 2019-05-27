@@ -4,9 +4,11 @@
       <md-avatar
         class="md-avatar-icon"
         :class="type !== 'conference' ? status.toLowerCase() : ''"
-        >{{ room.name[0].toUpperCase() }}</md-avatar
+        >{{ room.name ?
+          room.name[0].toUpperCase() : 'N'
+        }}</md-avatar
       >
-      <span class="md-list-item-text">{{ room.name }}</span>
+      <span class="md-list-item-text">{{ room.name ? room.name : 'New room'}}</span>
       <md-button class="md-icon-button md-list-action" @click.stop="deleteItem">
         <md-icon>close</md-icon>
       </md-button>

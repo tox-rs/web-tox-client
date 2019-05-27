@@ -8,9 +8,13 @@ export default Vue.extend({
   },
   computed: {
     name(): string {
-      return this.$store.state.rooms[this.$store.state.selectedRoom]
-        ? this.$store.state.rooms[this.$store.state.selectedRoom].name
-        : 'Empty Room';
+      if (this.$store.state.rooms) {
+        return this.$store.state.rooms[this.$store.state.selectedRoom]
+          ? this.$store.state.rooms[this.$store.state.selectedRoom].name
+          : 'Empty Room';
+      } else {
+        return 'Empty Room';
+      }
     },
     count(): number {
       return this.$store.state.notifications

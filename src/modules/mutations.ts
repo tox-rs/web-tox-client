@@ -7,6 +7,9 @@ export const mutations: MutationTree<any> = {
     state.info = value.info;
     state.conferenceRooms = value.conferenceRooms;
   },
+  ERROR_MSG(state, value){
+    state.err = value;
+  },
   ADD_FRIEND_ROOM(state, value) {
     if (state.rooms.length === 0) {
       state.rooms.push({});
@@ -31,6 +34,7 @@ export const mutations: MutationTree<any> = {
       name: value.name,
       msgs: [],
       type: 'conference',
+      peers: [],
       friend: value.conference,
       typing: null,
     });
@@ -48,16 +52,66 @@ export const mutations: MutationTree<any> = {
     newRooms[index].peers = value.peers;
     state.rooms = newRooms;
   },
-  DELETE_FRIEND_ROOM(state, value) {
-    const newRooms = [...state.rooms];
-    newRooms.splice(state.friendRooms[value], 1);
-    state.friendRooms.splice(value, 1);
+  UPDATE_ROOM_LIST(state, value) {
+    const newRooms: any = [];
+    const friendRooms: any = [];
+    const conferenceRooms: any = [];
+    newRooms.push({});
+    state.info.friends.forEach((element: any, index: any) => {
+      let msgsArr = [];
+      let roomName = 'New room';
+      if (state.rooms[state.friendRooms[element.number]]) {
+        msgsArr = state.rooms[state.friendRooms[element.number]].msgs;
+      }
+      if (element.name) {
+        roomName = element.name;
+      } else if (state.rooms[state.friendRooms[element.number]]) {
+        roomName = state.rooms[state.friendRooms[element.number]].name;
+      }
+      if (element) {
+        friendRooms[element.number] = newRooms.length;
+        newRooms.push({
+          id: newRooms.length,
+          name: roomName,
+          msgs: msgsArr,
+          type: 'friend',
+          friend: index,
+          typing: null,
+        });
+      }
+    });
+    state.rooms.forEach((room: any) => {
+      if (room) {
+        if (room.type === 'conference' && room.conference !== value) {
+          conferenceRooms[room.conference] = newRooms.length;
+          newRooms.push({
+            id: newRooms.length,
+            name: room.name,
+            msgs: room.msgs,
+            type: 'conference',
+            conference: room.conference,
+            peers: room.peers,
+            typing: null,
+          });
+        }
+      }
+    });
+    state.conferenceRooms = conferenceRooms;
+    state.friendRooms = friendRooms;
     state.rooms = newRooms;
   },
   DELETE_CONFERENCE_ROOM(state, value) {
-    const newRooms = [...state.rooms];
-    newRooms.splice(state.conferenceRooms[value], 1);
-    state.conferenceRooms.splice(value, 1);
+    const newRooms: any = [];
+    const conferenceRooms: any = [];
+    state.rooms.splice(state.conferenceRooms[value], 1);
+    newRooms.push({});
+    state.rooms.forEach((element: any) => {
+      if (element) {
+        conferenceRooms[value] = newRooms.length;
+        newRooms.push(element);
+      }
+    });
+    state.conferenceRooms = conferenceRooms;
     state.rooms = newRooms;
   },
   ADD_NOTIFICATION(state, value) {
@@ -274,18 +328,21 @@ export const mutations: MutationTree<any> = {
         value.friends.forEach((friend: any) => {
           info.friends.forEach((infoFriend: any) => {
             if (friend.public_key === infoFriend.public_key) {
+              infoFriend.number = friend.number;
               arr.push(infoFriend);
             }
           });
         });
         info.friends = arr;
-      } else if (info.friends.length < value.friends.length) {
+      } else if (info.friends.length <= value.friends.length) {
         const arr: any = [];
         value.friends.forEach((friend: any, key: any) => {
           arr.push(friend);
           info.friends.forEach((infoFriend: any) => {
             if (friend.public_key === infoFriend.public_key) {
               arr[key].name = infoFriend.name;
+              arr[key].connection = infoFriend.connection;
+              arr[key].number = friend.number;
             }
           });
         });

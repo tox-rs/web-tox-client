@@ -130,6 +130,12 @@ export class Client {
       default:
         break;
     }
+    if ((res as any).error) {
+      store.commit(
+        'ERROR_MSG',
+        (res as any).response + ': ' + (res as any).error,
+      );
+    }
   }
   public onToxEvent(event: ToxEvent) {
     console.log(event);

@@ -1,5 +1,7 @@
 
 <section class="notification">
-  <h1>notification Component</h1>
+  <md-snackbar md-position="left" :md-duration="4000" :md-active.sync="active" md-persistent>
+      <span>{{err}}</span>
+    </md-snackbar>
 </section>
 
