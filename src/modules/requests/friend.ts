@@ -4,10 +4,6 @@ import { ToxRequest } from 'ws-tox-protocol';
 export const friend: Module<any, any> = {
   namespaced: true,
   actions: {
-    test(context, value) {
-      console.log('friendRequestsActions');
-      console.log(context.rootState);
-    },
 
     FriendByPublicKey(context, value) {
       // "request": "FriendByPublicKey"

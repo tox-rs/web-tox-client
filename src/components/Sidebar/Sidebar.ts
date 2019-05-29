@@ -23,7 +23,4 @@ export default Vue.extend({
       }
     },
   },
-  created() {},
-  mounted() {},
-  methods: {},
 });

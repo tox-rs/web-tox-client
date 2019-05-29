@@ -3,7 +3,6 @@ import {
   ToxEvent,
   ToxRequest,
   MessageType,
-  Requests,
 } from 'ws-tox-protocol';
 
 export class Tox {
@@ -47,11 +46,11 @@ export class Tox {
       if (data.response !== undefined) {
         this.pushResponse(data as ToxResponse);
       } else if (data.event !== undefined) {
-        const event = new CustomEvent('core', {
+        const ev = new CustomEvent('core', {
           detail: data as ToxEvent,
         });
 
-        this.eventTarget.dispatchEvent(event);
+        this.eventTarget.dispatchEvent(ev);
       } else {
         this.pushResponse({ response: 'Ok' } as ToxResponse);
       }

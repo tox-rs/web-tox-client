@@ -26,7 +26,6 @@ export default Vue.extend({
       return this.$store.state.searchActive;
     },
   },
-  mounted() {},
   methods: {
     select(ev: any) {
       this.$parent.$children.forEach((child) => {

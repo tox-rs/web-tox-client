@@ -4,10 +4,6 @@ import { ToxRequest } from 'ws-tox-protocol';
 export const conference: Module<any, any> = {
   namespaced: true,
   actions: {
-    test(context, value) {
-      console.log('conferenceRequestsActions');
-      console.log(context.rootState);
-    },
     NewConference(context, value) {
       // "request": "NewConference",
       const request = { request: 'NewConference' } as ToxRequest;

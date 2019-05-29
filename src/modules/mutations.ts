@@ -7,8 +7,16 @@ export const mutations: MutationTree<any> = {
     state.info = value.info;
     state.conferenceRooms = value.conferenceRooms;
   },
-  ERROR_MSG(state, value){
+  ERROR_MSG(state, value) {
     state.err = value;
+  },
+  WRITE_AVATAR(state, value) {
+    const avatarStorage = [...state.avatarStorage];
+    avatarStorage[value.friend] =
+      (avatarStorage[value.friend]
+        ? avatarStorage[value.friend]
+        : '') + value.data;
+    state.avatarStorage = avatarStorage;
   },
   ADD_FRIEND_ROOM(state, value) {
     if (state.rooms.length === 0) {
@@ -159,15 +167,12 @@ export const mutations: MutationTree<any> = {
     state.addMemberActive = !state.addMemberActive;
   },
   TOX_AREA_TRIGGER(state) {
-    console.log('TOX_AREA_TRIGGER');
     state.toxAreaActive = !state.toxAreaActive;
   },
   MAIN_SIDEBAR_TRIGGER(state) {
-    console.log('MAIN_SIDEBAR_TRIGGER');
     state.mainSidebarActive = !state.mainSidebarActive;
   },
   SUB_SIDEBAR_TRIGGER(state) {
-    console.log('SUB_SIDEBAR_TRIGGER');
     state.subSidebarActive = !state.subSidebarActive;
   },
   eventConnectionStatus(state, value) {
@@ -186,7 +191,7 @@ export const mutations: MutationTree<any> = {
   eventFriendMessage(state, value) {
     state.rooms[state.friendRooms[value.friend]].msgs.push({
       value: value.message,
-      author: state.info.friends[value.friend].name,
+      author: value.friend,
       date: new Date(Date.now()),
       status: 'readed',
     });
@@ -249,8 +254,7 @@ export const mutations: MutationTree<any> = {
     const rooms = [...state.rooms];
     rooms[state.conferenceRooms[value.conference]].msgs.push({
       value: value.message,
-      author:
-        rooms[state.conferenceRooms[value.conference]].peers[value.peer].name,
+      author: value.peer,
       date: new Date(Date.now()),
       status: 'readed',
     });
@@ -309,7 +313,7 @@ export const mutations: MutationTree<any> = {
       state.rooms[state.friendRooms[value.req.friend]].msgs.length;
     state.rooms[state.friendRooms[value.req.friend]].msgs.push({
       value: value.req.message,
-      author: state.info.name,
+      author: 'you',
       date: new Date(Date.now()),
       status: 'sended',
     });

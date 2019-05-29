@@ -8,7 +8,12 @@ export default Vue.extend({
   components: { QrcodeStream, VueQRCodeComponent },
   props: [],
   data() {
-    return { value: null, navigator: navigator };
+    return {
+      value: null,
+      navigatorVue: navigator,
+      file: null,
+      fileList: [] as File[],
+    };
   },
   computed: {
     active: {
@@ -38,6 +43,12 @@ export default Vue.extend({
           content: ' ',
           placeholder: 'Name',
         };
+      } else if (this.dialogType === 'setAvatar') {
+        return {
+          title: 'Set avatar',
+          content: ' ',
+          placeholder: 'Name',
+        };
       } else {
         return {
           title: 'Scan QR',
@@ -45,21 +56,60 @@ export default Vue.extend({
       }
     },
   },
-  mounted() {},
   methods: {
     onConfirm() {
       if (this.dialogType === 'friend') {
         this.$store.dispatch('requests/friend/AddFriend', {
           tox_id: this.value,
         });
-      } else {
+      } else if (this.dialogType === 'setName') {
         this.$store.dispatch('requests/user/SetName', this.value);
+      } else if (this.dialogType === 'setAvatar') {
+        const store = this.$store;
+        const reader = new FileReader();
+        store.dispatch('requests/user/SendFile', {
+          friend: 0,
+          kind: 'Avatar',
+          size: this.fileList[0].size,
+          name: this.fileList[0].name,
+        });
+        setTimeout(() => {
+          store.dispatch('requests/user/ControlFile', {
+            friend: 0,
+            file_number: 0,
+          });
+        }, 2000);
+        reader.readAsDataURL(this.fileList[0]);
+        reader.onload = () => {
+          setTimeout(() => {
+            if (typeof reader.result === 'string') {
+              const base64 = reader.result.split(',')[1];
+              const steps = Math.round(base64.length / 1300);
+              let pos = 0;
+              for (let index = 0; index < steps; index++) {
+                const chunk = base64.substring(pos, pos + 1300);
+                store.dispatch('requests/user/SendFileChunk', {
+                  friend: 0,
+                  file_number: 0,
+                  position: pos,
+                  data: chunk,
+                });
+                pos = pos + 1300;
+                // console.log(position);
+                // console.log(chunk);
+              }
+            }
+          }, 6000);
+        };
       }
       this.active = false;
       this.value = null;
     },
     openQRDialog() {
       this.$store.commit('DIALOG_TRIGGER', 'QR');
+    },
+    onChangeFile(ev: any) {
+      this.fileList = ev;
     },
     onDecode(decodedString: any) {
       this.$store.dispatch('requests/friend/AddFriend', {

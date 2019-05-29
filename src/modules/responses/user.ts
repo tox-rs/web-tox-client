@@ -3,10 +3,6 @@ import { db } from '@/store';
 export const user: Module<any, any> = {
   namespaced: true,
   actions: {
-    test(context, value) {
-      console.log('userResponsesActions');
-      console.log(context.rootState);
-    },
     Ok(context, value) {
       // "response": "Ok"
       context.dispatch('requests/user/Info', {}, { root: true });
@@ -39,23 +35,13 @@ export const user: Module<any, any> = {
           root: true,
         },
       );
-      // context.rootState.info.friends.forEach((element: any) => {
-      //   if (context.rootState.friendRooms[element.number] === undefined) {
-      //     context.commit(
-      //       'ADD_FRIEND_ROOM',
-      //       {
-      //         name: element.name || 'New room',
-      //         friend: element.number,
-      //       },
-      //       { root: true },
-      //     );
-      //     db.addRoom(
-      //       context.rootState.rooms[
-      //         context.rootState.friendRooms[element.number]
-      //       ],
-      //     );
-      //   }
-      // });
+      context.rootState.info.friends.forEach((element: any) => {
+        db.updateRoom(
+          context.rootState.rooms[
+            context.rootState.friendRooms[element.number]
+          ],
+        );
+      });
     },
     ConnectionStatus(context, value) {
       // "response": "ConnectionStatus"

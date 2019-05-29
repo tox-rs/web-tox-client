@@ -31,8 +31,43 @@ export default Vue.extend({
         ];
       }
     },
+    you(): string {
+      let isExsist = false;
+      if (
+        this.$store.state.info.name ===
+          this.$store.state.rooms[this.$store.state.selectedRoom].name &&
+        this.$store.state.rooms[this.$store.state.selectedRoom].type ===
+          'friend'
+      ) {
+        isExsist = true;
+      }
+      return !isExsist
+        ? this.$store.state.info.name
+        : this.$store.state.info.name + ' (you)';
+    },
+    authors(): string[] {
+      const authors: any = [];
+      if (
+        this.$store.state.rooms[this.$store.state.selectedRoom].type ===
+        'friend'
+      ) {
+        this.$store.state.info.friends.forEach((friend: any) => {
+          authors[friend.number] = friend.name;
+        });
+        return authors;
+      } else {
+        this.$store.state.rooms[this.$store.state.selectedRoom].peers.forEach(
+          (peer: any) => {
+            authors[peer.number] = peer.name;
+          },
+        );
+        return authors;
+      }
+    },
+    avatars(): string[] {
+      return this.$store.state.avatarStorage;
+    },
   },
-  mounted() {},
   methods: {
     submit(ev: any) {
       if (this.message) {

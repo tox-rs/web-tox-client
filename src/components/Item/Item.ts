@@ -24,6 +24,29 @@ export default Vue.extend({
         return 'Offline';
       }
     },
+    avatar(): string {
+      if (this.$props.room && this.$props.room.type !== 'conference') {
+        const avatar = this.$store.state.avatarStorage[
+          this.$store.state.info.friends[this.$props.room.friend].number
+        ];
+        if (avatar) {
+          return 'data:image/png;base64,' + avatar;
+        } else {
+          return '';
+        }
+      } else if (this.$props.contact) {
+        const avatar = this.$store.state.avatarStorage[
+          this.$props.contact.number
+        ];
+        if (avatar) {
+          return 'data:image/png;base64,' + avatar;
+        } else {
+          return '';
+        }
+      } else {
+        return '';
+      }
+    },
     selectedContact(): object {
       return this.$store.state.selectedContact;
     },
@@ -37,7 +60,6 @@ export default Vue.extend({
       }
     },
   },
-  mounted() {},
   methods: {
     click(type: string) {
       if (this.$props.type === 'conference' || this.$props.type === 'friend') {

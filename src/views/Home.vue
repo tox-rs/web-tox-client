@@ -23,7 +23,7 @@ import Notification from '@/components/Notification/index.vue';
   },
 })
 export default class Home extends Vue {
-  mounted() {
+  public mounted() {
     if (
       navigator.appVersion.match(/iPhone/) ||
       navigator.appVersion.match(/Android/)
@@ -41,7 +41,7 @@ export default class Home extends Vue {
       const secondSidebar = this.$store.state.subSidebarActive;
       const toxArea = this.$store.state.toxAreaActive;
       const roomHeader = this.$children[1].$children[0];
-      if(secondSidebar){
+      if (secondSidebar) {
         return;
       }
       if (mainSidebar) {
@@ -75,7 +75,7 @@ export default class Home extends Vue {
       const secondSidebar = this.$store.state.subSidebarActive;
       const toxArea = this.$store.state.toxAreaActive;
       const roomHeader = this.$children[1].$children[0];
-      if(mainSidebar){
+      if (mainSidebar) {
         return;
       }
       if (secondSidebar) {

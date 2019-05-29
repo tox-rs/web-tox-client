@@ -74,6 +74,7 @@ export default new Vuex.Store({
     mainSidebarActive: true,
     subSidebarActive: true,
     err: '',
+    avatarStorage: [],
   },
   modules: {
     events,
@@ -110,22 +111,13 @@ export default new Vuex.Store({
           body: value,
         },
         {
-          onclick: function() {
-            console.log('Custom click event was called');
-          },
+          // onclick: function() {
+          //   console.log('Custom click event was called');
+          // },
         },
       );
     },
     getData(context) {
-      // context.dispatch('responses/conference/test');
-      // context.dispatch('responses/friend/test');
-      // context.dispatch('responses/user/test');
-      // context.dispatch('requests/conference/test');
-      // context.dispatch('requests/friend/test');
-      // context.dispatch('requests/user/test');
-      // context.dispatch('events/conference/test');
-      // context.dispatch('events/friend/test');
-      // context.dispatch('events/user/test');
       db.getData().then((res) => {
         if (res.info) {
           context.commit('INIT_STATE', res);

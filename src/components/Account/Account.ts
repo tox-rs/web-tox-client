@@ -13,10 +13,12 @@ export default Vue.extend({
       }
     },
   },
-  mounted() {},
   methods: {
     setName() {
       this.$store.commit('DIALOG_TRIGGER', 'setName');
+    },
+    setAvatar() {
+      this.$store.commit('DIALOG_TRIGGER', 'setAvatar');
     },
   },
 });

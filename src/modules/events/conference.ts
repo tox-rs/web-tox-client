@@ -3,10 +3,6 @@ import { db } from '@/store';
 export const conference: Module<any, any> = {
   namespaced: true,
   actions: {
-    test(context, value) {
-      console.log('conferenceEventsActions');
-      console.log(context);
-    },
     ConferenceInvite(context, value) {
         context.commit('event' + value.event, value, { root: true });
     },

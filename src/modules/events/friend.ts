@@ -3,12 +3,9 @@ import { db } from '@/store';
 export const friend: Module<any, any> = {
   namespaced: true,
   actions: {
-    test(context, value) {
-      console.log('friendEventsActions');
-      console.log(context.rootState);
-    },
     FriendRequest(context, value) {
       const data = Array.from(value.public_key, (byte: any) => {
+        // tslint:disable-next-line: no-bitwise
         return ('0' + (byte & 0xFF).toString(16)).slice(-2);
       }).join('');
       value.public_key = data.toUpperCase();

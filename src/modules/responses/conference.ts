@@ -3,10 +3,6 @@ import { db } from '@/store';
 export const conference: Module<any, any> = {
   namespaced: true,
   actions: {
-    test(context, value) {
-      console.log('conferenceResponsesActions');
-      console.log(context.rootState);
-    },
     Conference(context, value) {
       // "response": "Conference",
       // "conference": number

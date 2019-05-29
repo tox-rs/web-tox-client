@@ -52,23 +52,40 @@ export class IndexedDB {
     }
     const val = { ...value };
     val.typing = null;
-    await db.transaction('rw', db.rooms, async () => {
-      let room;
-      if (val.type === 'friend') {
-        room = await db.rooms.where({ friend: val.friend }).first();
-      } else {
-        room = await db.rooms.where({ conference: val.conference }).first();
-      }
-
-      if (room) {
-        if (
-          val.msgs.length > 0 ||
-          (room.msgs.length === 0 && val.msgs.length === 0)
-        ) {
-          db.rooms.update(room.id, val);
+    await db.transaction(
+      'rw',
+      db.rooms,
+      db.friendRooms,
+      db.conferenceRooms,
+      async () => {
+        let room;
+        if (val.type === 'friend') {
+          room = await db.rooms.where({ friend: val.friend }).first();
+        } else {
+          room = await db.rooms.where({ conference: val.conference }).first();
         }
-      }
-    });
+
+        if (room) {
+          if (
+            val.msgs.length > 0 ||
+            (room.msgs.length === 0 && val.msgs.length === 0)
+          ) {
+            db.rooms.update(room.id, val);
+          }
+        } else {
+          const roomId = await db.rooms.add(val);
+          if (val.type === 'friend') {
+            await db.friendRooms.add({ friend: val.friend, room: roomId });
+          }
+          if (val.type === 'conference') {
+            await db.conferenceRooms.add({
+              conference: val.conference,
+              room: roomId,
+            });
+          }
+        }
+      },
+    );
     return true;
   }
   public async deleteRoom(value: any) {
@@ -91,17 +108,16 @@ export class IndexedDB {
     conferenceRooms.forEach((conferenceRoom) => {
       conferenceRoomsArr[conferenceRoom.conference] = conferenceRoom.room;
     });
-    // rooms.forEach((room) => {
-    //   roomsArr[room.id] = room;
-    // });
+    rooms.forEach((room) => {
+      roomsArr[room.id] = room;
+    });
     if (infoUser) {
       infoUser.friends.forEach((friend: any) => {
         friend.connection = 'None';
       });
     }
-    console.log(infoUser);
     return {
-      rooms: rooms,
+      rooms: roomsArr,
       friendRooms: friendRoomsArr,
       info: infoUser,
       conferenceRooms: conferenceRoomsArr,

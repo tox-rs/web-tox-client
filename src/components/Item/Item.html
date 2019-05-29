@@ -2,13 +2,17 @@
   <template v-if="type === 'friend' || type === 'conference' && !contact">
     <md-list-item :class="type">
       <md-avatar
+        v-if="!avatar"
         class="md-avatar-icon"
         :class="type !== 'conference' ? status.toLowerCase() : ''"
-        >{{ room.name ?
-          room.name[0].toUpperCase() : 'N'
-        }}</md-avatar
+        >{{ room.name ? room.name[0].toUpperCase() : 'N' }}</md-avatar
       >
-      <span class="md-list-item-text">{{ room.name ? room.name : 'New room'}}</span>
+      <md-avatar v-if="avatar" :class="type !== 'conference' ? status.toLowerCase() : ''">
+        <img :src="avatar" alt="Avatar" />
+      </md-avatar>
+      <span class="md-list-item-text">{{
+        room.name ? room.name : 'New room'
+      }}</span>
       <md-button class="md-icon-button md-list-action" @click.stop="deleteItem">
         <md-icon>close</md-icon>
       </md-button>
@@ -17,10 +21,15 @@
 
   <template v-if="type === 'group' && !selectedContact">
     <md-list-item :class="type">
-      <md-avatar class="md-avatar-icon">{{ contact.name ?
-        contact.name[0].toUpperCase() : 'N'
+      <md-avatar v-if="!avatar" class="md-avatar-icon">{{
+        contact.name ? contact.name[0].toUpperCase() : 'N'
       }}</md-avatar>
-      <span class="md-list-item-text">{{ contact.name ? contact.name : 'New friend'}}</span>
+      <md-avatar v-if="avatar">
+        <img :src="avatar" alt="Avatar" />
+      </md-avatar>
+      <span class="md-list-item-text">{{
+        contact.name ? contact.name : 'New friend'
+      }}</span>
       <md-button class="md-icon-button md-list-action">
         <md-icon>keyboard_arrow_right</md-icon>
       </md-button>
@@ -83,16 +92,30 @@
           }}</md-avatar>
           <span>{{ senderName }}</span>
         </span>
-        <div class="btn-group" v-if="notification.type === 'invite' || notification.type === 'friend'">
-          <md-button @click.stop="acceptNotification" class="md-icon-button md-primary"><md-icon class="md-primary">check</md-icon></md-button>
-          <md-button @click.stop="deleteNotification" class="md-icon-button md-accent"><md-icon class="md-accent">close</md-icon></md-button>
+        <div
+          class="btn-group"
+          v-if="notification.type === 'invite' || notification.type === 'friend'"
+        >
+          <md-button
+            @click.stop="acceptNotification"
+            class="md-icon-button md-primary"
+            ><md-icon class="md-primary">check</md-icon></md-button
+          >
+          <md-button
+            @click.stop="deleteNotification"
+            class="md-icon-button md-accent"
+            ><md-icon class="md-accent">close</md-icon></md-button
+          >
         </div>
-        <span v-if="notification.type === 'ref' || notification.type === 'friend'" class="message">
+        <span
+          v-if="notification.type === 'ref' || notification.type === 'friend'"
+          class="message"
+        >
           <span v-if="notification.type === 'ref'">
             <md-avatar class="md-avatar-icon">D</md-avatar>
             <span>dluchko</span>
           </span>
-          {{notification.msg}}
+          {{ notification.msg }}
         </span>
       </a>
     </md-list-item>

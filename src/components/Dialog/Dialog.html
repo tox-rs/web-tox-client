@@ -4,12 +4,16 @@
     <md-dialog-title>{{dialogContent.title}}</md-dialog-title>
     <md-dialog-content>{{dialogContent.content}}</md-dialog-content>
     <md-dialog-content>
-        <md-field>
+        <md-field v-if="dialogType !== 'setAvatar'">
             <md-input :placeholder="dialogContent.placeholder" v-model="value"></md-input>
+        </md-field>
+        <md-field v-if="dialogType === 'setAvatar'">
+            <label>Set avatar</label>
+            <md-file @md-change="onChangeFile" v-model="file" />
         </md-field>
     </md-dialog-content>
     <md-dialog-actions>
-        <md-button v-if="navigator.appVersion.match(/iPhone/) || navigator.appVersion.match(/Android/)" @click="openQRDialog">Scan QR</md-button>
+        <md-button v-if="(navigatorVue.appVersion.match(/iPhone/) || navigatorVue.appVersion.match(/Android/)) && dialogType === 'friend'" @click="openQRDialog">Scan QR</md-button>
         <md-button class="md-primary" @click="active = false">Close</md-button>
         <md-button class="md-primary md-raised" @click="onConfirm">Ok</md-button>
     </md-dialog-actions>

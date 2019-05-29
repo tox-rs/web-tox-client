@@ -4,10 +4,6 @@ import { ToxRequest } from 'ws-tox-protocol';
 export const user: Module<any, any> = {
   namespaced: true,
   actions: {
-    test(context, value) {
-      console.log('userRequestsActions');
-      console.log(context.rootState);
-    },
     Info(context, value) {
       // "request": "Info",
       const request = { request: 'Info' } as ToxRequest;
@@ -106,6 +102,49 @@ export const user: Module<any, any> = {
       // "request": "GetStatus"
       const request = { request: 'GetStatus' } as ToxRequest;
       client.sendToxRequset(request);
+    },
+    ControlFile(context, value) {
+      // "request": "ControlFile"
+      // "friend": number
+      // "file_number": number
+      // "control": FileControl
+      const request = {
+        request: 'ControlFile',
+        friend: value.friend,
+        file_number: value.file_number,
+        control: 'Resume',
+      };
+      client.sendToxRequset(request as ToxRequest);
+    },
+    SendFile(context, value) {
+      // "request": "SendFile"
+      // "friend": number
+      // "kind": FileKind
+      // "file_size": number
+      // "file_name": string
+      const request = {
+        request: 'SendFile',
+        friend: value.friend,
+        kind: value.kind,
+        file_size: value.size,
+        file_name: value.name,
+      };
+      client.sendToxRequset(request as ToxRequest);
+    },
+    SendFileChunk(context, value) {
+      // "request": "SendFileChunk"
+      // "friend": number
+      // "file_number": number
+      // "position": number
+      // "data": string
+      const request = {
+        request: 'SendFileChunk',
+        friend: value.friend,
+        file_number: value.file_number,
+        position: value.position,
+        data: value.data,
+      };
+      client.sendToxRequset(request as ToxRequest);
     },
   },
 };

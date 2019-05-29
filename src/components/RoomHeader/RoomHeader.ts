@@ -22,7 +22,6 @@ export default Vue.extend({
         : 0;
     },
   },
-  mounted() {},
   methods: {
     tabSelect(id: any) {
       this.$store.dispatch('selectTab', id);
