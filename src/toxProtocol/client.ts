@@ -95,6 +95,7 @@ export class Client {
         break;
       case 'ConnectionStatus':
       case 'FileReceipt':
+      case 'FileChunkRequest':
         store.dispatch('events/user/' + event.event, event);
         break;
       case 'FileChunkReceipt':

@@ -14,5 +14,25 @@ export const user: Module<any, any> = {
       // "file_name": string
       context.dispatch('requests/user/ControlFile', value, { root: true });
     },
+    FileChunkRequest(context, value) {
+      if (value.length === 0) {
+        return;
+      }
+      const data = context.rootState.info.avatar.slice(
+        value.position,
+        value.position + value.length,
+      );
+      const b64encoded = btoa(String.fromCharCode.apply(null, data));
+      context.dispatch(
+        'requests/user/SendFileChunk',
+        {
+          friend: value.friend,
+          file_number: value.file_number,
+          position: value.position,
+          data: b64encoded,
+        },
+        { root: true },
+      );
+    },
   },
 };

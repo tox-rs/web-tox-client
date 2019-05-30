@@ -12,6 +12,12 @@ export default Vue.extend({
         return this.$store.state.info.name;
       }
     },
+    avatar(): string {
+      return (
+        'data:image/png;base64,' +
+        btoa(String.fromCharCode.apply(null, this.$store.state.info.avatar))
+      );
+    },
   },
   methods: {
     setName() {

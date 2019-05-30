@@ -1,7 +1,13 @@
 
 <section class="account">
-    <md-avatar class="md-avatar-icon">D</md-avatar>
-  
+    <md-avatar
+    v-if="!avatar"
+    class="md-avatar-icon"
+    >{{ name ? name[0].toUpperCase() : 'N' }}</md-avatar
+  >
+  <md-avatar v-if="avatar">
+    <img :src="avatar" alt="Avatar" />
+  </md-avatar>
         <span>{{name}}</span>
   
         <md-menu md-size="medium" :md-offset-x="-190" :md-offset-y="0">

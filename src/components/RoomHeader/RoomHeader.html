@@ -1,7 +1,7 @@
 
 <section class="room-header">
   <div class="title">
-      <md-avatar class="md-avatar-icon">{{name ? name[0] : 'E'}}</md-avatar>
+      <md-avatar class="md-avatar-icon">{{name ? name[0].toUpperCase() : 'E'}}</md-avatar>
       <span>{{name ? name : 'Empty room'}}</span>
   </div>
   <div class="toolbar">

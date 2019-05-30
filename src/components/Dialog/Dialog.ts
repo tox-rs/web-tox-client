@@ -67,39 +67,18 @@ export default Vue.extend({
       } else if (this.dialogType === 'setAvatar') {
         const store = this.$store;
         const reader = new FileReader();
-        store.dispatch('requests/user/SendFile', {
-          friend: 0,
-          kind: 'Avatar',
-          size: this.fileList[0].size,
-          name: this.fileList[0].name,
-        });
-        setTimeout(() => {
-          store.dispatch('requests/user/ControlFile', {
-            friend: 0,
-            file_number: 0,
-          });
-        }, 2000);
-        reader.readAsDataURL(this.fileList[0]);
+        reader.readAsArrayBuffer(this.fileList[0]);
         reader.onload = () => {
-          setTimeout(() => {
-            if (typeof reader.result === 'string') {
-              const base64 = reader.result.split(',')[1];
-              const steps = Math.round(base64.length / 1300);
-              let pos = 0;
-              for (let index = 0; index < steps; index++) {
-                const chunk = base64.substring(pos, pos + 1300);
-                store.dispatch('requests/user/SendFileChunk', {
-                  friend: 0,
-                  file_number: 0,
-                  position: pos,
-                  data: chunk,
-                });
-                pos = pos + 1300;
-                // console.log(position);
-                // console.log(chunk);
-              }
-            }
-          }, 6000);
+          if (reader.result !== null && typeof reader.result !== 'string') {
+            const base64 = new Uint8Array(reader.result);
+            console.log(base64);
+            store.dispatch('requests/user/SendAvatar', {
+              friend: 1,
+              file_size: base64.length,
+              file_hash: '98035b9d6284835d869102b5372addc83380218172e3c26bc76d0ca5771cdd88'.toUpperCase(),
+            });
+            store.commit('SET_AVATAR', base64);
+          }
         };
       }
       this.active = false;

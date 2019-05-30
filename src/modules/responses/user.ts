@@ -5,6 +5,9 @@ export const user: Module<any, any> = {
   actions: {
     Ok(context, value) {
       // "response": "Ok"
+      if (value.req.request === 'SendFileChunk') {
+        return;
+      }
       context.dispatch('requests/user/Info', {}, { root: true });
     },
     MessageSent(context, value) {

@@ -35,6 +35,9 @@ export default Vue.extend({
           return '';
         }
       } else if (this.$props.contact) {
+        if (this.$props.contact.avatar) {
+          return 'data:image/png;base64,' + btoa(String.fromCharCode.apply(null, this.$store.state.info.avatar));
+        }
         const avatar = this.$store.state.avatarStorage[
           this.$props.contact.number
         ];

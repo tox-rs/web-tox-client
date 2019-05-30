@@ -131,6 +131,19 @@ export const user: Module<any, any> = {
       };
       client.sendToxRequset(request as ToxRequest);
     },
+    SendAvatar(context, value) {
+      // "request": "SendAvatar"
+      // "friend": number
+      // "file_size": number
+      // "file_hash": string
+      const request = {
+        request: 'SendAvatar',
+        friend: value.friend,
+        file_size: value.file_size,
+        file_hash: value.file_hash,
+      };
+      client.sendToxRequset(request as ToxRequest);
+    },
     SendFileChunk(context, value) {
       // "request": "SendFileChunk"
       // "friend": number

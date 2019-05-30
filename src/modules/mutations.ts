@@ -10,12 +10,29 @@ export const mutations: MutationTree<any> = {
   ERROR_MSG(state, value) {
     state.err = value;
   },
+  SET_AVATAR(state, value) {
+    state.info.avatar = value;
+  },
   WRITE_AVATAR(state, value) {
     const avatarStorage = [...state.avatarStorage];
-    avatarStorage[value.friend] =
-      (avatarStorage[value.friend]
-        ? avatarStorage[value.friend]
-        : '') + value.data;
+    if (avatarStorage[value.friend] && value.data !== '') {
+      if (!avatarStorage[value.friend].match(/#/)) {
+        avatarStorage[value.friend] = '';
+      }
+      avatarStorage[value.friend] = avatarStorage[value.friend].replace(
+        '#',
+        '',
+      );
+      avatarStorage[value.friend] =
+        avatarStorage[value.friend] + value.data + '#';
+    } else if (avatarStorage[value.friend] && value.data === '') {
+      avatarStorage[value.friend] = avatarStorage[value.friend].replace(
+        '#',
+        '',
+      );
+    } else if (!avatarStorage[value.friend] && value.data !== '') {
+      avatarStorage[value.friend] = value.data + '#';
+    }
     state.avatarStorage = avatarStorage;
   },
   ADD_FRIEND_ROOM(state, value) {

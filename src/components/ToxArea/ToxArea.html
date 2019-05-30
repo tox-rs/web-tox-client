@@ -9,10 +9,10 @@
         class="avatar"
         v-if="index === 0 || content[index-1].author !== item.author"
       > 
-        <md-avatar v-if="avatars[item.author]">
-          <img :src="avatars[item.author]" alt="Avatar" />
+        <md-avatar v-if="item.author === 'you' ? avatar : avatars[item.author]">
+          <img :src="'data:image/png;base64,'+ (item.author === 'you' ? avatar : avatars[item.author])" alt="Avatar" />
         </md-avatar>
-        <md-avatar v-if="!avatars[item.author]"class="md-avatar-icon">
+        <md-avatar v-else class="md-avatar-icon">
           {{item.author !== 'you' ? authors[item.author][0].toUpperCase() : you[0].toUpperCase()}}
         </md-avatar>
         <div class="name">

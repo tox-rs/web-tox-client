@@ -64,7 +64,11 @@ export default Vue.extend({
         return authors;
       }
     },
+    avatar(): string {
+      return btoa(String.fromCharCode.apply(null, this.$store.state.info.avatar));
+    },
     avatars(): string[] {
+      const avatars = [...this.$store.state.avatarStorage];
       return this.$store.state.avatarStorage;
     },
   },
