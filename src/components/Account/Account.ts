@@ -13,6 +13,9 @@ export default Vue.extend({
       }
     },
     avatar(): string {
+      if (!this.$store.state.info.avatar) {
+             return '';
+      }
       return (
         'data:image/png;base64,' +
         btoa(String.fromCharCode.apply(null, this.$store.state.info.avatar))
