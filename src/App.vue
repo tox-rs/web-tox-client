@@ -43,6 +43,31 @@ div.handle.handle-mr {
   top: 0px;
   height: 100vh;
 }
+.md-snackbar.banner {
+  // max-width: 100%;
+  max-height: 600px;
+  left: unset !important;
+  .title {
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    img {
+      margin: 0px 5px;
+      margin-top: -14px;
+      width: 30px;
+      height: 30px;
+    }
+  }
+  .md-snackbar-content {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 12px;
+    .md-button {
+      min-width: 0;
+      margin: 0px -8px 0px -8px;
+    }
+  }
+}
 .md-button,
 .md-button-clean {
   font-family: 'Nunito', 'Roboto', 'Noto Sans', '-apple-system',
@@ -140,13 +165,13 @@ div.handle.handle-mr {
 // .md-menu-content{
 //   max-width: 260px!important;
 // }
-.md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon{
+.md-tabs.md-theme-default .md-tabs-navigation .md-button.md-active .md-icon {
   color: var(--md-theme-default-icon-on-background);
 }
-.md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon{
+.md-tabs.md-theme-default .md-tabs-navigation .md-button .md-icon {
   color: var(--md-theme-default-icon-on-background);
 }
-.md-menu .md-icon.md-theme-default.md-icon-font.md-primary{
+.md-menu .md-icon.md-theme-default.md-icon-font.md-primary {
   color: var(--md-theme-default-icon-on-background);
 }
 #prompt {

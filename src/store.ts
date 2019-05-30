@@ -62,7 +62,14 @@ export default new Vuex.Store({
     conferenceRooms: [...nums],
     numMsg: [...nums],
     notifications,
-    info: { connection: 'None', nospam: '', address: '', public_key: '', info },
+    info: {
+      connection: 'None',
+      banner: true,
+      nospam: '',
+      address: '',
+      public_key: '',
+      info,
+    },
     selectedTab: 'tab-person',
     selectedRoom: 1,
     dialogActive: false,
@@ -91,6 +98,14 @@ export default new Vuex.Store({
       if (context.state.addMemberActive) {
         context.commit('ADD_MEMBER_TRIGGER');
       }
+    },
+    setAvatar(context, value) {
+      context.commit('SET_AVATAR', value);
+      db.updateInfo(context.rootState.info);
+    },
+    disableBanner(context) {
+      context.commit('DISABLE_BANNER');
+      db.updateInfo(context.rootState.info);
     },
     selectRoom(context, value) {
       if (context.state.rooms.length) {

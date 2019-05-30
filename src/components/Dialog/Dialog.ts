@@ -70,14 +70,8 @@ export default Vue.extend({
         reader.readAsArrayBuffer(this.fileList[0]);
         reader.onload = () => {
           if (reader.result !== null && typeof reader.result !== 'string') {
-            const base64 = new Uint8Array(reader.result);
-            console.log(base64);
-            store.dispatch('requests/user/SendAvatar', {
-              friend: 1,
-              file_size: base64.length,
-              file_hash: '98035b9d6284835d869102b5372addc83380218172e3c26bc76d0ca5771cdd88'.toUpperCase(),
-            });
-            store.commit('SET_AVATAR', base64);
+            const arr = new Uint8Array(reader.result);
+            store.dispatch('setAvatar', arr);
           }
         };
       }

@@ -10,8 +10,15 @@ export const mutations: MutationTree<any> = {
   ERROR_MSG(state, value) {
     state.err = value;
   },
+  DISABLE_BANNER(state, value) {
+    const info = { ...state.info };
+    info.banner = false;
+    state.info = info;
+  },
   SET_AVATAR(state, value) {
-    state.info.avatar = value;
+    const info = { ...state.info };
+    info.avatar = value;
+    state.info = info;
   },
   WRITE_AVATAR(state, value) {
     const avatarStorage = [...state.avatarStorage];

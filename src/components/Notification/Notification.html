@@ -1,7 +1,31 @@
-
 <section class="notification">
-  <md-snackbar md-position="left" :md-duration="4000" :md-active.sync="active" md-persistent>
-      <span>{{err}}</span>
-    </md-snackbar>
+  <md-snackbar
+    md-position="left"
+    :md-duration="4000"
+    :md-active.sync="active"
+    md-persistent
+  >
+    <span>{{ err }}</span>
+  </md-snackbar>
+  <md-snackbar
+    class="banner"
+    md-position="center"
+    :md-duration="Infinity"
+    :md-active.sync="activeBanner"
+    md-persistent
+  >
+    <div class="title">
+        Beta Client <img src="/img/warning.svg" alt=""> Use Cautiously
+    </div>
+    <span
+      >This beta-release uses a ws-tox proxy between you and your friends, to
+      connect your browser to toxcore software. Privacy is critical to our
+      values and we promise we don't store any of your data, but it is
+      technologically possible, so you must decide whether to trust us. We are
+      almost done developing a secure .wasm module that more securely runs
+      everything locally on your device and will eliminate the ws-tox proxy and
+      the need to trust us.</span
+    >
+    <md-button class="md-primary" @click="clickTrust">I trust you</md-button>
+  </md-snackbar>
 </section>
-

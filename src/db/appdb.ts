@@ -2,6 +2,8 @@ import Dexie from 'dexie';
 
 interface Info {
   connection: string;
+  banner: boolean;
+  avatar: Uint8Array;
   nospam: string;
   address: string;
   public_key: string;

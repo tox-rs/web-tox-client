@@ -5,7 +5,7 @@ export default Vue.extend({
   components: {},
   props: [],
   data() {
-    return {};
+    return { banner: true };
   },
   computed: {
     active: {
@@ -16,9 +16,22 @@ export default Vue.extend({
         this.$store.commit('ERROR_MSG', '');
       },
     },
+    activeBanner: {
+      get(): boolean {
+      return this.$store.state.info.banner;
+      },
+      set() {
+        this.banner = false;
+        this.$store.dispatch('disableBanner');
+      },
+    },
     err(): string {
       return this.$store.state.err;
     },
   },
-  methods: {},
+  methods: {
+    clickTrust() {
+      this.activeBanner = false;
+    },
+  },
 });
