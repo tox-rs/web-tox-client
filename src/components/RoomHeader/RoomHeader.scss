@@ -1,4 +1,8 @@
 .room-header {
+  .warning{
+    color: #f4c330;
+    margin-right: 5px;
+  }
   height: 52px;
   display: flex;
   border-bottom: 1px solid var(--md-theme-default-border-accent);
