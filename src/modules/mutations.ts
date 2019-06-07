@@ -10,6 +10,11 @@ export const mutations: MutationTree<any> = {
   ERROR_MSG(state, value) {
     state.err = value;
   },
+  ENABLE_BANNER(state, value) {
+    const info = { ...state.info };
+    info.banner = true;
+    state.info = info;
+  },
   DISABLE_BANNER(state, value) {
     const info = { ...state.info };
     info.banner = false;

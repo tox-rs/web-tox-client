@@ -64,7 +64,7 @@ export default new Vuex.Store({
     notifications,
     info: {
       connection: 'None',
-      banner: true,
+      banner: false,
       nospam: '',
       address: '',
       public_key: '',
@@ -141,6 +141,7 @@ export default new Vuex.Store({
         } else {
           if (!context.state.info.nospam) {
             context.dispatch('requests/user/GetNospam');
+            context.commit('ENABLE_BANNER', res);
           }
         }
         context.dispatch('requests/user/Info');
