@@ -24,7 +24,7 @@
   "devDependencies": {
     "@types/jest": "^23.1.4",
     "@vue/cli-plugin-babel": "^3.6.0",
-    "@vue/cli-plugin-e2e-cypress": "^3.6.0",
+    "@vue/cli-plugin-e2e-cypress": "^5.0.8",
     "@vue/cli-plugin-pwa": "^3.6.0",
     "@vue/cli-plugin-typescript": "^3.6.0",
     "@vue/cli-plugin-unit-jest": "^3.6.0",
